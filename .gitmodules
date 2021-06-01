@@ -1,0 +1,3 @@
+[submodule "src/aports"]
+	path = src/aports
+	url = https://gitlab.alpinelinux.org/alpine/aports.git

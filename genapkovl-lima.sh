@@ -32,6 +32,15 @@ makefile root:root 0644 "$tmp"/etc/hostname <<EOF
 $HOSTNAME
 EOF
 
+mkdir -p "$tmp"/etc/network
+makefile root:root 0644 "$tmp"/etc/network/interfaces <<EOF
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+EOF
+
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
@@ -53,5 +62,7 @@ rc_add syslog boot
 rc_add mount-ro shutdown
 rc_add killprocs shutdown
 rc_add savecache shutdown
+
+rc_add networking default
 
 tar -c -C "$tmp" etc | gzip -9n > $HOSTNAME.apkovl.tar.gz

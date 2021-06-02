@@ -11,4 +11,5 @@ profile_lima() {
 	kernel_flavors="virt"
 	kernel_cmdline="console=tty0 console=ttyS0,115200"
 	syslinux_serial="0 115200"
+	apkovl="genapkovl-lima.sh"
 }

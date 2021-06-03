@@ -44,12 +44,16 @@ EOF
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
+cloud-init
 EOF
 
 rc_add devfs sysinit
 rc_add dmesg sysinit
-rc_add mdev sysinit
-rc_add hwdrivers sysinit
+
+# cloud-init requires udev instead
+# rc_add mdev sysinit
+# rc_add hwdrivers sysinit
+
 rc_add modloop sysinit
 
 rc_add hwclock boot
@@ -64,5 +68,20 @@ rc_add killprocs shutdown
 rc_add savecache shutdown
 
 rc_add networking default
+
+rc_add cloud-init-local boot
+rc_add cloud-config default
+rc_add cloud-final default
+rc_add cloud-init default
+
+rc_add udev sysinit
+rc_add udev-postmount default
+rc_add udev-trigger sysinit
+
+mkdir -p "${tmp}/etc/cloud/cloud.cfg.d/"
+cat > "$tmp/etc/cloud/cloud.cfg.d/10_lima.cfg" << EOF
+datasource_list: [ NoCloud, None ]
+network: { config: disabled }
+EOF
 
 tar -c -C "$tmp" etc | gzip -9n > $HOSTNAME.apkovl.tar.gz

@@ -12,4 +12,5 @@ docker run -it --rm \
        --outdir /iso \
        --arch x86_64 \
        --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/main \
+       --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community \
        --profile lima

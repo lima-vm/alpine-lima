@@ -45,6 +45,8 @@ mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
 cloud-init
+openssh
+sshfs
 EOF
 
 rc_add devfs sysinit
@@ -67,7 +69,11 @@ rc_add mount-ro shutdown
 rc_add killprocs shutdown
 rc_add savecache shutdown
 
+rc_add local default
+
 rc_add networking default
+
+rc_add sshd default
 
 rc_add cloud-init-local boot
 rc_add cloud-config default
@@ -83,5 +89,13 @@ cat > "$tmp/etc/cloud/cloud.cfg.d/10_lima.cfg" << EOF
 datasource_list: [ NoCloud, None ]
 network: { config: disabled }
 EOF
+
+mkdir -p "${tmp}/etc/local.d/"
+cat > "$tmp/etc/local.d/lima.start" << EOF
+modprobe fuse
+sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config
+rc-service sshd reload
+EOF
+chmod +x "$tmp/etc/local.d/lima.start"
 
 tar -c -C "$tmp" etc | gzip -9n > $HOSTNAME.apkovl.tar.gz

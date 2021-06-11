@@ -1,4 +1,6 @@
 ALPINE_VERSION ?= 3.13.5
+REPO_VERSION ?= $(shell echo "$(ALPINE_VERSION)" | sed -E 's/^([0-9]+\.[0-9]+).*/v\1/')
+GIT_TAG ?= $(shell echo "v$(ALPINE_VERSION)" | sed 's/^vedge$$/origin\/master/')
 
 # Editions should be 5 chars or less because the full name is used as
 # the volume id, and cannot exceed 32 characters.
@@ -7,7 +9,7 @@ EDITION ?= std
 
 .PHONY: mkimage
 mkimage:
-	cd src/aports && git fetch && git checkout v$(ALPINE_VERSION)
+	cd src/aports && git fetch && git checkout $(GIT_TAG)
 	docker build \
 		--tag mkimage:$(ALPINE_VERSION) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
@@ -15,14 +17,14 @@ mkimage:
 
 .PHONY: iso
 iso:
-	ALPINE_VERSION=$(ALPINE_VERSION) EDITION=$(EDITION) ./build.sh
+	ALPINE_VERSION=$(ALPINE_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) ./build.sh
 
 .PHONY: run
 run:
 	qemu-system-x86_64 \
 		-boot order=d,splash-time=0,menu=on \
 		-cdrom iso/alpine-lima-$(EDITION)-$(ALPINE_VERSION)-x86_64.iso \
-		-cpu Haswell-v4 \
+		-cpu host \
 		-machine q35,accel=hvf \
 		-smp 4,sockets=1,cores=4,threads=1 \
 		-m 4096 \

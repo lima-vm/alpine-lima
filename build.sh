@@ -2,15 +2,16 @@
 
 mkdir -p iso
 
-# Strip patch level from Alpine version
-REPO_VERSION="v${ALPINE_VERSION%.[0-9]*}"
-
 TAG="${EDITION}-${ALPINE_VERSION}"
+
+source "edition/${EDITION}"
 
 docker run -it --rm \
        -v "${PWD}/iso:/iso" \
        -v "${PWD}/mkimg.lima.sh:/home/build/aports/scripts/mkimg.lima.sh:ro" \
        -v "${PWD}/genapkovl-lima.sh:/home/build/aports/scripts/genapkovl-lima.sh:ro" \
+       $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
+       -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
        "mkimage:${ALPINE_VERSION}" \
        --tag "${TAG}" \
        --outdir /iso \

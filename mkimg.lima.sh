@@ -13,5 +13,14 @@ profile_lima() {
 	kernel_cmdline="console=tty0 console=ttyS0,115200"
 	syslinux_serial="0 115200"
 	apkovl="genapkovl-lima.sh"
-	apks="$apks cloud-init openssh sshfs"
+	apks="$apks openssh"
+        if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
+            apks="$apks cloud-init"
+        fi
+        if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
+            apks="$apks k3s"
+        fi
+        if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
+            apks="$apks sshfs"
+        fi
 }

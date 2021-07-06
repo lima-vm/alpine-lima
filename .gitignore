@@ -1,1 +1,4 @@
 iso/
+# lima config files
+ci.yaml
+std.yaml

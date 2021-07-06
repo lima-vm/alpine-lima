@@ -17,6 +17,9 @@ profile_lima() {
         if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
             apks="$apks cloud-init"
         fi
+        if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
+            apks="$apks e2fsprogs lsblk sfdisk shadow sudo udev"
+        fi
         if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
             apks="$apks k3s"
         fi

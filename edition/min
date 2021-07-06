@@ -1,3 +1,4 @@
 export LIMA_INSTALL_CLOUD_INIT=false
+export LIMA_INSTALL_LIMA_INIT=false
 export LIMA_INSTALL_K3S=false
 export LIMA_INSTALL_SSHFS=false

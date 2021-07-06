@@ -19,6 +19,10 @@ mkimage:
 iso:
 	ALPINE_VERSION=$(ALPINE_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) ./build.sh
 
+.PHONY: lima
+lima:
+	ALPINE_VERSION=$(ALPINE_VERSION) EDITION=$(EDITION) ./lima.sh
+
 .PHONY: run
 run:
 	qemu-system-x86_64 \

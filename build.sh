@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -eu
 
 mkdir -p iso
 
@@ -10,6 +11,8 @@ docker run -it --rm \
        -v "${PWD}/iso:/iso" \
        -v "${PWD}/mkimg.lima.sh:/home/build/aports/scripts/mkimg.lima.sh:ro" \
        -v "${PWD}/genapkovl-lima.sh:/home/build/aports/scripts/genapkovl-lima.sh:ro" \
+       -v "${PWD}/lima-init.sh:/home/build/lima-init.sh:ro" \
+       -v "${PWD}/lima-init.openrc:/home/build/lima-init.openrc:ro" \
        $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
        -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
        "mkimage:${ALPINE_VERSION}" \

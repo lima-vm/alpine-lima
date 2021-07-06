@@ -1,0 +1,11 @@
+#!/sbin/openrc-run
+
+depend() {
+  after net
+  provide lima-init
+}
+
+start() {
+  lima-init
+  eend 0
+}

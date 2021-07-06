@@ -1,3 +1,4 @@
 source edition/min
 LIMA_INSTALL_LIMA_INIT=true
+LIMA_INSTALL_BINFMT_MISC=true
 LIMA_INSTALL_SSHFS=true

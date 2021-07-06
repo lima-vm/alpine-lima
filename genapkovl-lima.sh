@@ -118,6 +118,19 @@ if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     rc_add k3s default
 fi
 
+if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
+    echo "qemu-aarch64" >> "$tmp"/etc/apk/world
+
+    mkdir -p "${tmp}/etc/init.d/"
+    APKBUILD=/home/build/aports/community/qemu-openrc/APKBUILD
+    PKGVER=$(awk '/^pkgver=/ {split($1, a, "="); print a[2]}' ${APKBUILD})
+    URL=$(awk '/^url=/ {split($1, a, "="); print a[2]}' ${APKBUILD} | tr -d '"' | sed 's/github/raw.githubusercontent/')
+    wget "${URL}/v${PKGVER}/qemu-binfmt.initd" -O "${tmp}/etc/init.d/qemu-binfmt"
+    chmod +x "${tmp}/etc/init.d/qemu-binfmt"
+
+    rc_add qemu-binfmt default
+fi
+
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
 fi

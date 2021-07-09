@@ -113,11 +113,6 @@ network: { config: disabled }
 EOF
 fi
 
-if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
-    echo "k3s" >> "$tmp"/etc/apk/world
-    rc_add k3s default
-fi
-
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     echo "qemu-aarch64" >> "$tmp"/etc/apk/world
 
@@ -129,6 +124,15 @@ if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     chmod +x "${tmp}/etc/init.d/qemu-binfmt"
 
     rc_add qemu-binfmt default
+fi
+
+if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
+    echo "ca-certificates" >> "$tmp"/etc/apk/world
+fi
+
+if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
+    echo "k3s" >> "$tmp"/etc/apk/world
+    rc_add k3s default
 fi
 
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then

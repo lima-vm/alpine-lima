@@ -14,6 +14,9 @@ profile_lima() {
 	syslinux_serial="0 115200"
 	apkovl="genapkovl-lima.sh"
 	apks="$apks openssh"
+        if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
+            apks="$apks ca-certificates"
+        fi
         if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
             apks="$apks cloud-init"
         fi

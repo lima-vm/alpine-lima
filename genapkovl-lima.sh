@@ -109,7 +109,6 @@ if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
     mkdir -p "${tmp}/etc/cloud/cloud.cfg.d/"
     makefile root:root 0644 "$tmp/etc/cloud/cloud.cfg.d/10_lima.cfg" << EOF
 datasource_list: [ NoCloud, None ]
-network: { config: disabled }
 EOF
 fi
 

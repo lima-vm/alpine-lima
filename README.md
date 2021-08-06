@@ -1,6 +1,6 @@
 # alpine-lima: build Alpine based ISO images for lima
 
-[Lima](https://github.com/AkihiroSuda/lima) launches Linux Virtual Machines on macOS.
+[Lima](https://github.com/lima-vm/lima) launches Linux Virtual Machines on macOS.
 
 This repo contains the scripts and tools to build an ISO image for Lima to be used by [Rancher Desktop](https://github.com/rancher-sandbox/rancher-desktop).
 

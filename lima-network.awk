@@ -1,4 +1,4 @@
-# This script collects information from `ip -0 link` about current interface
+# This script collects information from `ip -o link` about current interface
 # names with data from "cidata/network-config" about the desired state.
 #
 # Arrays:
@@ -10,7 +10,7 @@
 # and if newnames is not yet empty, it renames one of the addresses to a temporary
 # name to break cyclic dependencies.
 #
-# The generated script is being running by lima-init when all links are still down, so
+# The generated script is being run by lima-init when all links are still down, so
 # no commands are produced to change the interface status (names can only be changed
 # in DOWN status).
 
@@ -49,12 +49,20 @@ function rename(addr, target) {
     use[target] = addr
 }
 
+function availname() {
+    itf = 0
+    do {
+        itfname = "itf" itf
+        itf = itf + 1
+    } while (itfname in use)
+    return itfname
+}
+
 BEGIN {
     print "set -eux"
 }
 
 END {
-    itf = 0
     do {
         len = length(newname)
         for (addr in newname) {
@@ -74,11 +82,7 @@ END {
             # Is the desired interface name in use and not going to be renamed?
             if ((newname[addr] in use) && !(use[newname[addr]] in newname)) {
                 # Assign the current address to a generic itf to make the name available
-                do {
-                    itfname = "itf" itf
-                    itf = itf + 1
-                } while (itfname in use)
-                rename(use[newname[addr]], itfname)
+                rename(use[newname[addr]], availname())
             }
             # Is the desired interface name not being used right now?
             if (!(newname[addr] in use)) {
@@ -91,7 +95,7 @@ END {
         # locked in a cycle. Break it by renaming a random interface to a temporary name.
         if (len == length(newname)) {
             for (addr in newname) {
-                rename(addr, "itface")
+                rename(addr, availname())
                 break
             }
         }

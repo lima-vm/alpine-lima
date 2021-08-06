@@ -81,6 +81,7 @@ if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
 
     mkdir -p "${tmp}/usr/bin/"
     cp /home/build/lima-init.sh "${tmp}/usr/bin/lima-init"
+    cp /home/build/lima-network.awk "${tmp}/usr/bin/lima-network.awk"
 
     echo e2fsprogs >> "$tmp"/etc/apk/world
     echo lsblk >> "$tmp"/etc/apk/world

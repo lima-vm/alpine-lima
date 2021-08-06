@@ -13,6 +13,7 @@ docker run -it --rm \
        -v "${PWD}/genapkovl-lima.sh:/home/build/aports/scripts/genapkovl-lima.sh:ro" \
        -v "${PWD}/lima-init.sh:/home/build/lima-init.sh:ro" \
        -v "${PWD}/lima-init.openrc:/home/build/lima-init.openrc:ro" \
+       -v "${PWD}/lima-network.awk:/home/build/lima-network.awk:ro" \
        $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
        -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
        "mkimage:${ALPINE_VERSION}" \

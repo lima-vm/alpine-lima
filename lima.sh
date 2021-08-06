@@ -8,6 +8,8 @@ images:
 mounts:
 - location: "~"
   writable: false
+- location: "/tmp/lima"
+  writable: true
 ssh:
   localPort: 40022
 firmware:

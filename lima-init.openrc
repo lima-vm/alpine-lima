@@ -1,7 +1,8 @@
 #!/sbin/openrc-run
 
 depend() {
-  after net
+  after localmount
+  before net
   provide lima-init
 }
 

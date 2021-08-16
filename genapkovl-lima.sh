@@ -93,6 +93,8 @@ if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
     rc_add udev sysinit
     rc_add udev-postmount default
     rc_add udev-trigger sysinit
+
+    rc_add machine-id sysinit
 fi
 
 if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then

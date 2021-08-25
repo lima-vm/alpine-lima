@@ -18,7 +18,7 @@ hostname "${LIMA_CIDATA_HOSTNAME}"
 
 # Create user
 LIMA_CIDATA_HOMEDIR="/home/${LIMA_CIDATA_USER}.linux"
-adduser -h "${LIMA_CIDATA_HOMEDIR}" -u "${LIMA_CIDATA_UID}" -D "${LIMA_CIDATA_USER}"
+useradd --home-dir "${LIMA_CIDATA_HOMEDIR}" --create-home --uid "${LIMA_CIDATA_UID}" "${LIMA_CIDATA_USER}"
 
 # Add user to sudoers
 echo "${LIMA_CIDATA_USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/90-lima-users

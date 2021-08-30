@@ -137,6 +137,10 @@ if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     rc_add k3s default
 fi
 
+if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
+    echo "logrotate" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
 fi

@@ -29,6 +29,9 @@ profile_lima() {
         if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
             apks="$apks k3s"
         fi
+        if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
+            apks="$apks logrotate"
+        fi
         if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
             apks="$apks sshfs"
         fi

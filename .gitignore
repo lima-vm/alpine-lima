@@ -1,4 +1,6 @@
-iso/
+/iso/
 # lima config files
-ci.yaml
-std.yaml
+/ci.yaml
+/rd.yaml
+/std.yaml
+/nerdctl-*

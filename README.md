@@ -36,7 +36,7 @@ The "k3s" edition is the same as "ci" plus `k3s` pre-installed. This is still su
 
 ### Rancher Desktop: rd
 
-The "rd" edition was meant to be tailored exactly to the requirements of Rancher Desktop. For the time being it would be identical to the "std" edition, so "rd" does not exist yet.
+The "rd" edition includes additional components for Rancher Desktop. These can change randomly to match particular RD releases (or just experiments) and should not be relied on by other applications.
 
 ## Building and testing
 

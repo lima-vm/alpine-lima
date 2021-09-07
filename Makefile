@@ -7,6 +7,8 @@ GIT_TAG ?= $(shell echo "v$(ALPINE_VERSION)" | sed 's/^vedge$$/origin\/master/')
 # len("alpine-lima-12345-3.13.5-x86_64") == 31
 EDITION ?= std
 
+NERDCTL_VERSION=0.11.1
+
 .PHONY: mkimage
 mkimage:
 	cd src/aports && git fetch && git checkout $(GIT_TAG)
@@ -16,8 +18,11 @@ mkimage:
 		.
 
 .PHONY: iso
-iso:
-	ALPINE_VERSION=$(ALPINE_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) ./build.sh
+iso: nerdctl-$(NERDCTL_VERSION)
+	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) ./build.sh
+
+nerdctl-$(NERDCTL_VERSION):
+	curl -o $@ -Ls https://github.com/containerd/nerdctl/releases/download/v$(NERDCTL_VERSION)/nerdctl-full-$(NERDCTL_VERSION)-linux-amd64.tar.gz
 
 .PHONY: lima
 lima:

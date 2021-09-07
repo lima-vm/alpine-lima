@@ -28,7 +28,8 @@ LIMA_CIDATA_SSHDIR="${LIMA_CIDATA_HOMEDIR}"/.ssh
 mkdir -p -m 700 "${LIMA_CIDATA_SSHDIR}"
 awk '/ssh-authorized-keys/ {flag=1; next} /^ *$/ {flag=0} flag {sub(/^ +- /, ""); print $0}' \
 	"${LIMA_CIDATA_MNT}"/user-data >"${LIMA_CIDATA_SSHDIR}"/authorized_keys
-chown -R "${LIMA_CIDATA_USER}:${LIMA_CIDATA_USER}" "${LIMA_CIDATA_SSHDIR}"
+LIMA_CIDATA_GID=$(id -g "${LIMA_CIDATA_USER}")
+chown -R "${LIMA_CIDATA_UID}:${LIMA_CIDATA_GID}" "${LIMA_CIDATA_SSHDIR}"
 chmod 600 "${LIMA_CIDATA_SSHDIR}"/authorized_keys
 
 # Rename network interfaces according to network-config setting

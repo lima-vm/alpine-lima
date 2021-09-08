@@ -70,4 +70,12 @@ awk -f- "${LIMA_CIDATA_MNT}"/network-config <<'EOF' > /etc/udev/rules.d/70-persi
 }
 EOF
 
+# Add static nameservers to /etc/resolv.conf
+DNS=$(awk '/nameservers:/{flag=1; next} /^[^ ]/{flag=0} flag {gsub("^ +- +", ""); print}' \
+          "${LIMA_CIDATA_MNT}"/user-data | tr "\n" " ")
+
+if [ -n "${DNS}" ]; then
+    sed -i "/export dns/a dns=\"${DNS}\"" /usr/share/udhcpc/default.script
+fi
+
 exec "${LIMA_CIDATA_MNT}"/boot.sh

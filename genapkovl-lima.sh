@@ -152,7 +152,10 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
         chmod u+s "${tmp}/usr/local/bin/${bin}"
     done
-    cp -r "${tmp}/nerdctl/libexec" "${tmp}/usr/local/"
+    mkdir -p "${tmp}/usr/local/libexec/cni"
+    for plugin in bridge portmap firewall tuning isolation host-local; do
+        cp "${tmp}/nerdctl/libexec/cni/${plugin}" "${tmp}/usr/local/libexec/cni/${plugin}"
+    done
 fi
 
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then

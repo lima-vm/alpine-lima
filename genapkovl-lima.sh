@@ -141,9 +141,11 @@ if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
     echo "logrotate" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
     echo "iptables ip6tables" >> "$tmp"/etc/apk/world
+fi
 
+if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
     mkdir -p "${tmp}/nerdctl"
     tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl.tar.gz
 

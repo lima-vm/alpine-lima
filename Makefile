@@ -8,7 +8,7 @@ BUILD_ID ?= $(shell git describe --tags)
 # len("alpine-lima-12345-3.13.5-x86_64") == 31
 EDITION ?= std
 
-NERDCTL_VERSION=0.11.1
+NERDCTL_VERSION=0.12.1
 
 .PHONY: mkimage
 mkimage:

@@ -79,6 +79,11 @@ mkdir -p "${tmp}/etc/local.d/"
 makefile root:root 0755 "$tmp/etc/local.d/lima.start" << EOF
 sed -i 's/#UsePAM no/UsePAM yes/g' /etc/ssh/sshd_config
 rc-service --ifstarted sshd reload
+
+if ! grep -q BUILD_ID /etc/os-release; then
+    echo "BUILD_ID=\"${LIMA_BUILD_ID}\"" >> /etc/os-release
+    echo "VARIANT_ID=\"${LIMA_VARIANT_ID}\"" >> /etc/os-release
+fi
 EOF
 
 mkdir -p "$tmp"/etc/pam.d

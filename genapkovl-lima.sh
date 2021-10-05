@@ -44,7 +44,7 @@ EOF
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
-openssh
+openssh-server-pam
 EOF
 
 rc_add devfs sysinit
@@ -72,6 +72,17 @@ rc_add savecache shutdown
 rc_add networking default
 
 rc_add sshd default
+
+rc_add local default
+
+mkdir -p "${tmp}/etc/local.d/"
+makefile root:root 0755 "$tmp/etc/local.d/lima.start" << EOF
+sed -i 's/#UsePAM no/UsePAM yes/g' /etc/ssh/sshd_config
+rc-service --ifstarted sshd reload
+EOF
+
+mkdir -p "$tmp"/etc/pam.d
+cp /home/build/sshd.pam "${tmp}/etc/pam.d/sshd"
 
 if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
     rc_add lima-init default

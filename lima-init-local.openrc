@@ -1,0 +1,12 @@
+#!/sbin/openrc-run
+
+depend() {
+  after localmount
+  before net
+  provide lima-init-local
+}
+
+start() {
+  lima-init --local
+  eend 0
+}

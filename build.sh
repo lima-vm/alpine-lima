@@ -13,6 +13,7 @@ docker run -it --rm \
        -v "${PWD}/genapkovl-lima.sh:/home/build/aports/scripts/genapkovl-lima.sh:ro" \
        -v "${PWD}/lima-init.sh:/home/build/lima-init.sh:ro" \
        -v "${PWD}/lima-init.openrc:/home/build/lima-init.openrc:ro" \
+       -v "${PWD}/lima-init-local.openrc:/home/build/lima-init-local.openrc:ro" \
        -v "${PWD}/lima-network.awk:/home/build/lima-network.awk:ro" \
        -v "${PWD}/nerdctl-${NERDCTL_VERSION}:/home/build/nerdctl.tar.gz:ro" \
        $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \

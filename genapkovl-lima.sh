@@ -75,9 +75,11 @@ rc_add sshd default
 
 if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
     rc_add lima-init default
+    rc_add lima-init-local default
 
     mkdir -p "${tmp}/etc/init.d/"
     cp /home/build/lima-init.openrc "${tmp}/etc/init.d/lima-init"
+    cp /home/build/lima-init-local.openrc "${tmp}/etc/init.d/lima-init-local"
 
     mkdir -p "${tmp}/usr/bin/"
     cp /home/build/lima-init.sh "${tmp}/usr/bin/lima-init"

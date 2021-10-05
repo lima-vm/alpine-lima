@@ -1,14 +1,18 @@
 #!/bin/sh
-exec >/var/log/lima-init.log 2>&1
+exec >>/var/log/lima-init.log 2>&1
 set -eux
+
+export LIMA_CIDATA_MNT="/mnt/lima-cidata"
+
+if [ "${1:-}" != "--local" ]; then
+    exec "${LIMA_CIDATA_MNT}"/boot.sh
+fi
 
 ln -s /var/log/lima-init.log /var/log/cloud-init-output.log
 
-LIMA_CIDATA_MNT="/mnt/lima-cidata"
 LIMA_CIDATA_DEV="/dev/disk/by-label/cidata"
 mkdir -p -m 700 "${LIMA_CIDATA_MNT}"
 mount -o ro,mode=0700,dmode=0700,overriderockperm,exec,uid=0 "${LIMA_CIDATA_DEV}" "${LIMA_CIDATA_MNT}"
-export LIMA_CIDATA_MNT
 
 . "${LIMA_CIDATA_MNT}"/lima.env
 
@@ -77,5 +81,3 @@ DNS=$(awk '/nameservers:/{flag=1; next} /^[^ ]/{flag=0} flag {gsub("^ +- +", "")
 if [ -n "${DNS}" ]; then
     sed -i "/export dns/a dns=\"${DNS}\"" /usr/share/udhcpc/default.script
 fi
-
-exec "${LIMA_CIDATA_MNT}"/boot.sh

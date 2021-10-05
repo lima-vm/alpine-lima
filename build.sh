@@ -16,6 +16,7 @@ docker run -it --rm \
        -v "${PWD}/lima-init-local.openrc:/home/build/lima-init-local.openrc:ro" \
        -v "${PWD}/lima-network.awk:/home/build/lima-network.awk:ro" \
        -v "${PWD}/nerdctl-${NERDCTL_VERSION}:/home/build/nerdctl.tar.gz:ro" \
+       -v "${PWD}/sshd.pam:/home/build/sshd.pam:ro" \
        $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
        -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
        "mkimage:${ALPINE_VERSION}" \

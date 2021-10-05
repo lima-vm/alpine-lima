@@ -19,6 +19,8 @@ docker run -it --rm \
        -v "${PWD}/sshd.pam:/home/build/sshd.pam:ro" \
        $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
        -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
+       -e "LIMA_BUILD_ID=${BUILD_ID}" \
+       -e "LIMA_VARIANT_ID=${EDITION}" \
        "mkimage:${ALPINE_VERSION}" \
        --tag "${TAG}" \
        --outdir /iso \

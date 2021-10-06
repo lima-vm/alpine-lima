@@ -73,18 +73,31 @@ rc_add networking default
 
 rc_add sshd default
 
-rc_add local default
+# lima-overlay must run with the boot filesystem, so has to run before
+# cloud-init or lima-init because the boot script will remap /etc and
+# /var/lib to the data volume.
 
-mkdir -p "${tmp}/etc/local.d/"
-makefile root:root 0755 "$tmp/etc/local.d/lima.start" << EOF
-sed -i 's/#UsePAM no/UsePAM yes/g' /etc/ssh/sshd_config
-rc-service --ifstarted sshd reload
+mkdir -p "${tmp}/etc/init.d/"
+makefile root:root 0755 "$tmp/etc/init.d/lima-overlay" << EOF
+#!/sbin/openrc-run
 
-if ! grep -q BUILD_ID /etc/os-release; then
-    echo "BUILD_ID=\"${LIMA_BUILD_ID}\"" >> /etc/os-release
-    echo "VARIANT_ID=\"${LIMA_VARIANT_ID}\"" >> /etc/os-release
-fi
+depend() {
+  after localmount
+  before cloud-init-local lima-init-local sshd
+  provide lima-overlay
+}
+
+start() {
+  sed -i 's/#UsePAM no/UsePAM yes/g' /etc/ssh/sshd_config
+
+  echo "BUILD_ID=\"${LIMA_BUILD_ID}\"" >> /etc/os-release
+  echo "VARIANT_ID=\"${LIMA_VARIANT_ID}\"" >> /etc/os-release
+
+  eend 0
+}
 EOF
+
+rc_add lima-overlay default
 
 mkdir -p "$tmp"/etc/pam.d
 cp /home/build/sshd.pam "${tmp}/etc/pam.d/sshd"

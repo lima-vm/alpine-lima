@@ -146,6 +146,18 @@ datasource_list: [ NoCloud, None ]
 EOF
 fi
 
+if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
+    echo libseccomp >> "$tmp"/etc/apk/world
+    echo runc >> "$tmp"/etc/apk/world
+    echo containerd >> "$tmp"/etc/apk/world
+    echo tini-static >> "$tmp"/etc/apk/world
+    echo device-mapper-libs >> "$tmp"/etc/apk/world
+    echo docker-engine >> "$tmp"/etc/apk/world
+    echo docker-openrc >> "$tmp"/etc/apk/world
+    echo docker-cli >> "$tmp"/etc/apk/world
+    echo docker >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     echo "qemu-aarch64" >> "$tmp"/etc/apk/world
 

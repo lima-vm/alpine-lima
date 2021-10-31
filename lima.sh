@@ -2,9 +2,10 @@
 set -eu
 
 cat <<EOF >"${EDITION}.yaml"
+arch: "${ARCH}"
 images:
-- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-x86_64.iso"
-  arch: "x86_64"
+- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+  arch: "${ARCH}"
 mounts:
 - location: "~"
   writable: false

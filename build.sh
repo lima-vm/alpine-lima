@@ -29,3 +29,6 @@ docker run -it --rm \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/main" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/community" \
     --profile lima
+
+ISO="alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+cd iso && sha512sum "${ISO}" > "${ISO}.sha512sum"

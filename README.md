@@ -38,6 +38,11 @@ The "k3s" edition is the same as "ci" plus `k3s` pre-installed. This is still su
 
 The "rd" edition includes additional components for Rancher Desktop. These can change randomly to match particular RD releases (or just experiments) and should not be relied on by other applications.
 
+## Architecture
+
+This repo supports the generation of images for different architectures. 
+Only `x86_64` and `aarch64` have been tested but other architectures can also be generated.
+
 ## Building and testing
 
 Note that this repo includes the [Alpine aports](https://github.com/alpinelinux/aports.git) repository as a submodule. If you didn't specify the `--recursive` option when cloning this repo, then you need to initialize the submodule by running:
@@ -46,7 +51,8 @@ Note that this repo includes the [Alpine aports](https://github.com/alpinelinux/
 git submodule update --init
 ```
 
-The examples show the default values for `ALPINE_VERSION=3.13.5 EDITION=std`. The options need to be specified only to select non-default setting.
+The examples show the default values for `ALPINE_VERSION=3.13.5 EDITION=std`, `ARCH` defaults to the OS architecture `uname -m`.
+The options need to be specified only to select non-default setting.
 
 ### Build the builder
 

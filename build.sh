@@ -7,7 +7,7 @@ TAG="${EDITION}-${ALPINE_VERSION}"
 
 source "edition/${EDITION}"
 
-docker run -it --rm \
+docker run --rm \
     --platform "linux/${ARCH_ALIAS}" \
     -v "${PWD}/iso:/iso" \
     -v "${PWD}/mkimg.lima.sh:/home/build/aports/scripts/mkimg.lima.sh:ro" \
@@ -29,3 +29,6 @@ docker run -it --rm \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/main" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/community" \
     --profile lima
+
+ISO="alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+cd iso && sha512sum "${ISO}" > "${ISO}.sha512sum"

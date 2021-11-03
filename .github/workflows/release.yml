@@ -5,6 +5,7 @@ on:
     tags:
     - 'v*'
     - 'test-v*'
+  pull_request:
 
 env:
   ALPINE_VERSION: 3.13.5
@@ -42,6 +43,7 @@ jobs:
         make iso EDITION=rd ARCH=aarch64
 
     - name: Create release
+      if: github.event_name != 'pull_request'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Note "folded" style; requires a blank line to insert actual newline

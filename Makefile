@@ -17,7 +17,7 @@ ARCH_ALIAS_x86_64 = amd64
 ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
-NERDCTL_VERSION=0.13.0
+NERDCTL_VERSION=0.14.0
 
 .PHONY: mkimage
 mkimage:

@@ -18,6 +18,7 @@ ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
 NERDCTL_VERSION=0.14.0
+BINFMT_IMAGE=tonistiigi/binfmt:qemu-v6.1.0
 
 .PHONY: mkimage
 mkimage:
@@ -25,6 +26,7 @@ mkimage:
 	docker build \
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
+		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \
 		--platform linux/$(ARCH_ALIAS) \
 		.
 

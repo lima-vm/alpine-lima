@@ -170,6 +170,10 @@ if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     mkdir -p "${tmp}/usr/bin/"
     cp /binfmt/qemu-${OTHERARCH} "${tmp}/usr/bin/"
 
+    # Copy QEMU license into /usr/share/doc (using Debian naming convention)
+    mkdir -p "${tmp}/usr/share/doc/qemu/"
+    cp /home/build/qemu-copying "${tmp}/usr/share/doc/qemu/copyright"
+
     mkdir -p "${tmp}/etc/init.d/"
     APKBUILD=/home/build/aports/community/qemu-openrc/APKBUILD
     PKGVER=$(awk '/^pkgver=/ {split($1, a, "="); print a[2]}' ${APKBUILD})

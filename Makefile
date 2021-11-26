@@ -18,6 +18,8 @@ ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
 NERDCTL_VERSION=0.14.0
+QEMU_VERSION=v6.1.0
+BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
 
 .PHONY: mkimage
 mkimage:
@@ -25,16 +27,20 @@ mkimage:
 	docker build \
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
+		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \
 		--platform linux/$(ARCH_ALIAS) \
 		.
 
 .PHONY: iso
-iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH)
-	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) BUILD_ID=$(BUILD_ID) ARCH=$(ARCH) ARCH_ALIAS=$(ARCH_ALIAS) ./build.sh
+iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying
+	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) QEMU_VERSION=$(QEMU_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) BUILD_ID=$(BUILD_ID) ARCH=$(ARCH) ARCH_ALIAS=$(ARCH_ALIAS) ./build.sh
 
 
 nerdctl-$(NERDCTL_VERSION)-$(ARCH):
 	curl -o $@ -Ls https://github.com/containerd/nerdctl/releases/download/v$(NERDCTL_VERSION)/nerdctl-full-$(NERDCTL_VERSION)-linux-$(ARCH_ALIAS).tar.gz
+
+qemu-$(QEMU_VERSION)-copying:
+	curl -o $@ -Ls https://raw.githubusercontent.com/qemu/qemu/$(QEMU_VERSION)/COPYING
 
 .PHONY: lima
 lima:

@@ -159,7 +159,20 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
 fi
 
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
-    echo "qemu-aarch64" >> "$tmp"/etc/apk/world
+    # install qemu-aarch64 on x86_64 and vice versa
+    OTHERARCH=aarch64
+    if [ "$(uname -m)" == "${OTHERARCH}" ]; then
+        OTHERARCH=x86_64
+    fi
+
+    # Installing into /usr/bin instead of /usr/local/bin because that's
+    # where /etc/init.d/qemu-binfmt will be looking for it
+    mkdir -p "${tmp}/usr/bin/"
+    cp /binfmt/qemu-${OTHERARCH} "${tmp}/usr/bin/"
+
+    # Copy QEMU license into /usr/share/doc (using Debian naming convention)
+    mkdir -p "${tmp}/usr/share/doc/qemu/"
+    cp /home/build/qemu-copying "${tmp}/usr/share/doc/qemu/copyright"
 
     mkdir -p "${tmp}/etc/init.d/"
     APKBUILD=/home/build/aports/community/qemu-openrc/APKBUILD
@@ -167,6 +180,12 @@ if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     URL=$(awk '/^url=/ {split($1, a, "="); print a[2]}' ${APKBUILD} | tr -d '"' | sed 's/github/raw.githubusercontent/')
     wget "${URL}/v${PKGVER}/qemu-binfmt.initd" -O "${tmp}/etc/init.d/qemu-binfmt"
     chmod +x "${tmp}/etc/init.d/qemu-binfmt"
+
+    # qemu-binfmt doesn't include an entry for x86_64
+    magic="7f454c4602010100000000000000000002003e00"
+    mask="fffffffffffefe00fffffffffffffffffeffffff"
+    arch="x86_64"
+    sed -i "/^FMTS=/a \\\t${magic} ${mask} ${arch}" "${tmp}/etc/init.d/qemu-binfmt"
 
     rc_add qemu-binfmt default
 fi

@@ -1,7 +1,7 @@
 profile_lima() {
 	profile_standard
 	profile_abbrev="lima"
-	title="Linux on Mac"
+	title="Linux Virtual Machines"
 	desc="Similar to standard.
 		Slimmed down kernel.
 		Optimized for virtual systems.

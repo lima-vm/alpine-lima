@@ -48,16 +48,21 @@ lima:
 
 .PHONY: run
 run:
+	accel=tcg; display=sdl; \
+	case "$(shell uname)" in \
+		Darwin) accel=hvf; display=cocoa;; \
+		Linux) accel=kvm; display=gtk;; \
+	esac; \
 	qemu-system-$(ARCH) \
 		-boot order=d,splash-time=0,menu=on \
 		-cdrom iso/alpine-lima-$(EDITION)-$(ALPINE_VERSION)-$(ARCH).iso \
 		-cpu host \
-		-machine q35,accel=hvf \
+		-machine q35,accel=$$accel \
 		-smp 4,sockets=1,cores=4,threads=1 \
 		-m 4096 \
 		-net nic,model=virtio \
 		-net user,net=192.168.5.0/24,hostfwd=tcp:127.0.0.1:20022-:22 \
-		-display cocoa \
+		-display $$display \
 		-device virtio-rng-pci \
 		-device virtio-vga \
 		-device virtio-keyboard-pci \

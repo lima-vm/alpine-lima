@@ -163,6 +163,12 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo socat >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_CONTAINERD}" == "true" ]; then
+    echo runc >> "$tmp"/etc/apk/world
+    echo containerd >> "$tmp"/etc/apk/world
+    echo cni-plugins >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     # install qemu-aarch64 on x86_64 and vice versa
     OTHERARCH=aarch64
@@ -212,12 +218,19 @@ if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "t
     echo "iptables ip6tables" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+if [ "${LIMA_INSTALL_NERDCTL}" == "true" ] || [ "${LIMA_INSTALL_BUILDKIT}" == "true" ]; then
     mkdir -p "${tmp}/nerdctl"
     tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl.tar.gz
 
     mkdir -p "${tmp}/usr/local/bin/"
-    for bin in buildctl buildkitd nerdctl; do
+    bin=""
+    if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+	bin="$bin nerdctl"
+    fi
+    if [ "${LIMA_INSTALL_BUILDKIT}" == "true" ]; then
+	bin="$bin buildctl buildkitd"
+    fi
+    for bin in $bin; do
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
         chmod u+s "${tmp}/usr/local/bin/${bin}"
     done

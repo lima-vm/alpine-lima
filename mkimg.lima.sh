@@ -25,6 +25,9 @@ profile_lima() {
             apks="$apks docker-engine docker-openrc docker-cli docker"
             apks="$apks socat"
         fi
+        if [ "${LIMA_INSTALL_CONTAINERD}" == "true" ]; then
+            apks="$apks runc containerd cni-plugins"
+	fi
         if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
             apks="$apks e2fsprogs lsblk sfdisk shadow sudo udev"
         fi

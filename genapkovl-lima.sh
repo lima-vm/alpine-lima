@@ -240,6 +240,11 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ] || [ "${LIMA_INSTALL_BUILDKIT}" == "t
     done
 fi
 
+if [ "${LIMA_INSTALL_CONTAINERD}" == "true" ] && [ "${LIMA_INSTALL_BUILDKIT}" == "true" ]; then
+    cp /home/build/buildkit.openrc "${tmp}/etc/init.d/buildkit"
+    rc_add buildkit default
+fi
+
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
 fi

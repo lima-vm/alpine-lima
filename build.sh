@@ -17,6 +17,7 @@ docker run --rm \
     -v "${PWD}/lima-init-local.openrc:/home/build/lima-init-local.openrc:ro" \
     -v "${PWD}/lima-network.awk:/home/build/lima-network.awk:ro" \
     -v "${PWD}/nerdctl-${NERDCTL_VERSION}-${ARCH}:/home/build/nerdctl.tar.gz:ro" \
+    -v "${PWD}/buildkit.openrc:/home/build/buildkit.openrc:ro" \
     -v "${PWD}/qemu-${QEMU_VERSION}-copying:/home/build/qemu-copying:ro" \
     -v "${PWD}/sshd.pam:/home/build/sshd.pam:ro" \
     $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \

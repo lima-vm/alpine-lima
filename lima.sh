@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -eu
 
+case "$(uname)" in
+  Darwin) display=cocoa;;
+  Linux) display=gtk;;
+esac
 cat <<EOF >"${EDITION}.yaml"
 arch: "${ARCH}"
 images:
@@ -16,7 +20,7 @@ ssh:
 firmware:
   legacyBIOS: true
 video:
-  display: cocoa
+  display: $display
 containerd:
   system: false
   user: false

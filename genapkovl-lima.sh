@@ -131,7 +131,8 @@ fi
 if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
     echo cloud-init >> "$tmp"/etc/apk/world
     echo e2fsprogs >> "$tmp"/etc/apk/world
-    
+    echo sudo >> "$tmp"/etc/apk/world
+   
     rc_add cloud-init-local boot
     rc_add cloud-config default
     rc_add cloud-final default

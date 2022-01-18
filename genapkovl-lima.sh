@@ -158,6 +158,9 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo docker-openrc >> "$tmp"/etc/apk/world
     echo docker-cli >> "$tmp"/etc/apk/world
     echo docker >> "$tmp"/etc/apk/world
+
+    # kubectl port-forward requires `socat` when using docker-shim
+    echo socat >> "$tmp"/etc/apk/world
 fi
 
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then

@@ -163,6 +163,14 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo socat >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_PODMAN}" == "true" ]; then
+    echo crun >> "$tmp"/etc/apk/world # "runc"
+    echo conmon >> "$tmp"/etc/apk/world # "containerd"
+    echo catatonit >> "$tmp"/etc/apk/world # "tini"
+    echo cni-plugins >> "$tmp"/etc/apk/world
+    echo podman >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     # install qemu-aarch64 on x86_64 and vice versa
     OTHERARCH=aarch64

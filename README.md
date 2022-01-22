@@ -30,6 +30,10 @@ The "std" edition uses a custom "lima-init" script instead of "cloud-init" to av
 
 Right now the "std" edition also installs `qemu-aarch64` and configures it via `binfmt_misc` to be able to run Apple Silicon binaries. This is not the whole `qemu-openrc` package, but just the minimal subset for this one architecture, plus the configuration script.
 
+### Docker: de
+
+The "de" edition is the same as "std" plus `docker` pre-installed, that is: Docker Engine.
+
 ### Kubernetes: k3s
 
 The "k3s" edition is the same as "ci" plus `k3s` pre-installed. This is still subject to change.

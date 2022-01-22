@@ -1,0 +1,2 @@
+source edition/std
+LIMA_INSTALL_DOCKER=true

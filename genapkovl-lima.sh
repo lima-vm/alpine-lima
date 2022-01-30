@@ -261,7 +261,9 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
     mkdir -p "${tmp}/usr/local/bin/"
     for bin in buildctl buildkitd nerdctl; do
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
-        chmod u+s "${tmp}/usr/local/bin/${bin}"
+        if [ "${LIMA_INSTALL_NERDCTL_SUID}" == "true" ]; then
+            chmod u+s "${tmp}/usr/local/bin/${bin}"
+        fi
     done
 fi
 

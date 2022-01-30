@@ -232,7 +232,9 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ] || [ "${LIMA_INSTALL_BUILDKIT}" == "t
     fi
     for bin in $bin; do
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
-        chmod u+s "${tmp}/usr/local/bin/${bin}"
+        if [ "${LIMA_INSTALL_NERDCTL_SUID}" == "true" ]; then
+            chmod u+s "${tmp}/usr/local/bin/${bin}"
+        fi
     done
     mkdir -p "${tmp}/usr/local/libexec/cni"
     for plugin in bridge portmap firewall tuning isolation host-local; do

@@ -199,6 +199,10 @@ if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
     echo "ca-certificates" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ]; then
+    echo "cni-plugins" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     echo "k3s" >> "$tmp"/etc/apk/world
     rc_add k3s default
@@ -221,10 +225,12 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
         chmod u+s "${tmp}/usr/local/bin/${bin}"
     done
-    mkdir -p "${tmp}/usr/local/libexec/cni"
-    for plugin in bridge portmap firewall tuning isolation host-local; do
-        cp "${tmp}/nerdctl/libexec/cni/${plugin}" "${tmp}/usr/local/libexec/cni/${plugin}"
-    done
+    if [ "${LIMA_INSTALL_CNI_PLUGINS}" != "true" ]; then
+        mkdir -p "${tmp}/usr/local/libexec/cni"
+        for plugin in bridge portmap firewall tuning isolation host-local; do
+            cp "${tmp}/nerdctl/libexec/cni/${plugin}" "${tmp}/usr/local/libexec/cni/${plugin}"
+        done
+    fi
 fi
 
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then

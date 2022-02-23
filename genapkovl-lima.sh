@@ -225,7 +225,10 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
         chmod u+s "${tmp}/usr/local/bin/${bin}"
     done
-    if [ "${LIMA_INSTALL_CNI_PLUGINS}" != "true" ]; then
+    if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ]; then
+        mkdir -p "${tmp}/usr/libexec/cni"
+        cp "${tmp}/nerdctl/libexec/cni/isolation" "${tmp}/usr/libexec/cni/isolation"
+    else
         mkdir -p "${tmp}/usr/local/libexec/cni"
         for plugin in bridge portmap firewall tuning isolation host-local; do
             cp "${tmp}/nerdctl/libexec/cni/${plugin}" "${tmp}/usr/local/libexec/cni/${plugin}"

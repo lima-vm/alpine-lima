@@ -161,6 +161,9 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
 
     # kubectl port-forward requires `socat` when using docker-shim
     echo socat >> "$tmp"/etc/apk/world
+
+    # So `docker buildx` can unpack tar.xz files
+    echo xz >> "$tmp"/etc/apk/world
 fi
 
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then

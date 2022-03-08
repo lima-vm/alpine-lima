@@ -132,7 +132,7 @@ if [ "${LIMA_INSTALL_CLOUD_INIT}" == "true" ]; then
     echo cloud-init >> "$tmp"/etc/apk/world
     echo e2fsprogs >> "$tmp"/etc/apk/world
     echo sudo >> "$tmp"/etc/apk/world
-   
+
     rc_add cloud-init-local boot
     rc_add cloud-config default
     rc_add cloud-final default
@@ -238,6 +238,17 @@ fi
 
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
+fi
+
+if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
+    mkdir -p "${tmp}/cri-dockerd"
+    tar xz -C "${tmp}/cri-dockerd" -f /home/build/cri-dockerd.tar.gz
+    mkdir -p "${tmp}/usr/local/bin/"
+    cp "${tmp}/cri-dockerd/cri-dockerd" "${tmp}/usr/local/bin/"
+
+    #Copy the LICENSE file for cri-dockerd
+    mkdir -p "${tmp}/usr/share/doc/cri-dockerd/"
+    cp "${tmp}/cri-dockerd/LICENSE" "${tmp}/usr/share/doc/cri-dockerd/"
 fi
 
 mkdir -p "${tmp}/etc"

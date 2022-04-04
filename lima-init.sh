@@ -36,6 +36,26 @@ LIMA_CIDATA_GID=$(id -g "${LIMA_CIDATA_USER}")
 chown -R "${LIMA_CIDATA_UID}:${LIMA_CIDATA_GID}" "${LIMA_CIDATA_SSHDIR}"
 chmod 600 "${LIMA_CIDATA_SSHDIR}"/authorized_keys
 
+# Add mounts to /etc/fstab
+sed -i '/#LIMA-START/,/#LIMA-END/d' /etc/fstab
+echo "#LIMA-START" >> /etc/fstab
+awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' >> /etc/fstab
+/^mounts:/ {
+    flag = 1
+    next
+}
+/^ *$/ {
+    flag = 0
+}
+flag {
+    sub(/^ *- \[/, "")
+    sub(/"?\] *$/, "")
+    gsub("\"?, \"?", "\t")
+    print $0
+}
+EOF
+echo "#LIMA-END" >> /etc/fstab
+
 # Rename network interfaces according to network-config setting
 mkdir -p /var/lib/lima-init
 IP_RENAME=/var/lib/lima-init/ip-rename

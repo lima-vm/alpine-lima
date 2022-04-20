@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -eu
 
+DOCKER=${DOCKER:-docker}
+
 mkdir -p iso
 
 TAG="${EDITION}-${ALPINE_VERSION}"
 
 source "edition/${EDITION}"
 
-docker run --rm \
+${DOCKER} run --rm \
     --platform "linux/${ARCH_ALIAS}" \
     -v "${PWD}/iso:/iso" \
     -v "${PWD}/mkimg.lima.sh:/home/build/aports/scripts/mkimg.lima.sh:ro" \

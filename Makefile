@@ -11,6 +11,9 @@ EDITION ?= std
 
 # Architecture defaults to the current system's.
 ARCH ?= $(shell uname -m)
+ifeq ($(strip $(ARCH)),arm64)
+ARCH = aarch64
+endif
 
 # ARCH is derived from `uname -m` but the alternate architecture name (e.g. amd64, arm64)
 # is required for Docker and asset downloads.

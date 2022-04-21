@@ -23,7 +23,7 @@ ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
 NERDCTL_VERSION=0.17.1
 QEMU_VERSION=v6.1.0
-CRI_DOCKERD_VERSION=0.2.0
+CRI_DOCKERD_VERSION=0.2.0-1
 BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
 
 .PHONY: mkimage
@@ -48,7 +48,7 @@ qemu-$(QEMU_VERSION)-copying:
 	curl -o $@ -Ls https://raw.githubusercontent.com/qemu/qemu/$(QEMU_VERSION)/COPYING
 
 cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH):
-	curl -o $@ -Ls https://github.com/Mirantis/cri-dockerd/releases/download/v$(CRI_DOCKERD_VERSION)/cri-dockerd-v$(CRI_DOCKERD_VERSION)-linux-$(ARCH_ALIAS).tar.gz
+	curl -o $@ -Ls https://github.com/rancher-sandbox/cri-dockerd/releases/download/v$(CRI_DOCKERD_VERSION)/cri-dockerd-v$(CRI_DOCKERD_VERSION)-linux-$(ARCH_ALIAS).tar.gz
 
 .PHONY: lima
 lima:

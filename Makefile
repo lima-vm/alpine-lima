@@ -2,6 +2,7 @@ ALPINE_VERSION ?= 3.14.3
 REPO_VERSION ?= $(shell echo "$(ALPINE_VERSION)" | sed -E 's/^([0-9]+\.[0-9]+).*/v\1/')
 GIT_TAG ?= $(shell echo "v$(ALPINE_VERSION)" | sed 's/^vedge$$/origin\/master/')
 BUILD_ID ?= $(shell git describe --tags)
+DOCKER ?= docker
 
 # Editions should be 5 chars or less because the full name is used as
 # the volume id, and cannot exceed 32 characters.
@@ -10,6 +11,9 @@ EDITION ?= std
 
 # Architecture defaults to the current system's.
 ARCH ?= $(shell uname -m)
+ifeq ($(strip $(ARCH)),arm64)
+ARCH = aarch64
+endif
 
 # ARCH is derived from `uname -m` but the alternate architecture name (e.g. amd64, arm64)
 # is required for Docker and asset downloads.
@@ -25,7 +29,7 @@ BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
 .PHONY: mkimage
 mkimage:
 	cd src/aports && git fetch && git checkout $(GIT_TAG)
-	docker build \
+	$(DOCKER) build \
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \

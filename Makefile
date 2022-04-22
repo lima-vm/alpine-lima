@@ -21,7 +21,7 @@ ARCH_ALIAS_x86_64 = amd64
 ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
-NERDCTL_VERSION=0.17.1
+NERDCTL_VERSION=0.19.0
 QEMU_VERSION=v6.1.0
 CRI_DOCKERD_VERSION=0.2.0-1
 BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
@@ -30,6 +30,7 @@ BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
 mkimage:
 	cd src/aports && git fetch && git checkout $(GIT_TAG)
 	$(DOCKER) build \
+		--progress plain --no-cache \
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \

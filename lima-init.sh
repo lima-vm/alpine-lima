@@ -55,6 +55,8 @@ flag {
 }
 EOF
 echo "#LIMA-END" >> /etc/fstab
+mkmntdirs
+mount -a
 
 # Rename network interfaces according to network-config setting
 mkdir -p /var/lib/lima-init

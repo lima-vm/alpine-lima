@@ -216,6 +216,10 @@ if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
     ln -s "flannel-${ARCH}" "${tmp}/usr/libexec/cni/flannel"
 fi
 
+if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
+    echo "curl" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     echo "k3s" >> "$tmp"/etc/apk/world
     rc_add k3s default

@@ -1,2 +1,3 @@
 source edition/min
 LIMA_INSTALL_CLOUD_INIT=true
+LIMA_INSTALL_OPENSSH_SFTP_SERVER=true

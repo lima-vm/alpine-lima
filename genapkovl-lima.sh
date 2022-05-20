@@ -244,6 +244,10 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
     done
 fi
 
+if [ "${LIMA_INSTALL_OPENSSH_SFTP_SERVER}" == "true" ]; then
+    echo "openssh-sftp-server" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
 fi

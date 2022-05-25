@@ -256,11 +256,11 @@ if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
     mkdir -p "${tmp}/cri-dockerd"
     tar xz -C "${tmp}/cri-dockerd" -f /home/build/cri-dockerd.tar.gz
     mkdir -p "${tmp}/usr/local/bin/"
-    cp "${tmp}/cri-dockerd/cri-dockerd" "${tmp}/usr/local/bin/"
+    cp "${tmp}/cri-dockerd/cri-dockerd/cri-dockerd" "${tmp}/usr/local/bin/"
 
     #Copy the LICENSE file for cri-dockerd
     mkdir -p "${tmp}/usr/share/doc/cri-dockerd/"
-    cp "${tmp}/cri-dockerd/LICENSE" "${tmp}/usr/share/doc/cri-dockerd/"
+    cp /home/build/cri-dockerd.license "${tmp}/usr/share/doc/cri-dockerd/LICENSE"
 fi
 
 mkdir -p "${tmp}/etc"

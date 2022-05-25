@@ -21,6 +21,7 @@ ${DOCKER} run --rm \
     -v "${PWD}/nerdctl-${NERDCTL_VERSION}-${ARCH}:/home/build/nerdctl.tar.gz:ro" \
     -v "${PWD}/qemu-${QEMU_VERSION}-copying:/home/build/qemu-copying:ro" \
     -v "${PWD}/cri-dockerd-${CRI_DOCKERD_VERSION}-${ARCH}:/home/build/cri-dockerd.tar.gz:ro" \
+    -v "${PWD}/cri-dockerd-${CRI_DOCKERD_VERSION}-${ARCH}.LICENSE:/home/build/cri-dockerd.license:ro" \
     -v "${PWD}/sshd.pam:/home/build/sshd.pam:ro" \
     $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
     -e "LIMA_REPO_VERSION=${REPO_VERSION}" \

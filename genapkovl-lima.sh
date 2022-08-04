@@ -195,6 +195,9 @@ if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     arch="x86_64"
     sed -i "/^FMTS=/a \\\t${magic} ${mask} ${arch}" "${tmp}/etc/init.d/qemu-binfmt"
 
+    # qemu from tonistiigi/binfmt is patched to assume preserve-argv; set it here.
+    echo 'binfmt_flags="POCF"' > "${tmp}/etc/conf.d/qemu-binfmt"
+
     rc_add qemu-binfmt default
 fi
 

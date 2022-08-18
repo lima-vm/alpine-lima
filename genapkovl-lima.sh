@@ -220,6 +220,10 @@ if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
     echo "curl" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_GIT}" == "true" ]; then
+    echo "git" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     echo "k3s" >> "$tmp"/etc/apk/world
     rc_add k3s default

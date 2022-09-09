@@ -103,3 +103,39 @@ DNS=$(awk '/nameservers:/{flag=1; next} /^[^ ]/{flag=0} flag {gsub("^ +- +", "")
 if [ -n "${DNS}" ]; then
     sed -i "/export dns/a dns=\"${DNS}\"" /usr/share/udhcpc/default.script
 fi
+
+# Remove default CA certs
+if grep -q "^  remove_defaults: true" "${LIMA_CIDATA_MNT}"/user-data >/dev/null; then
+    rm /etc/ca-certificates.conf
+    rm -rf /usr/share/ca-certificates/*
+    update-ca-certificates
+fi
+
+# Add user-data CA certs to system certs
+LIMA_CA_CERTS=/usr/share/ca-certificates/lima-init-ca-certs.crt
+awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' > ${LIMA_CA_CERTS}
+# Lima currently uses "ca-certs", which is deprecated and should be "ca_certs"
+/^ca.certs:/ {
+    cacerts = 1
+    next
+}
+/^  trusted:/ && cacerts {
+    trusted = 1
+    next
+}
+/^ *$/ {
+    cacerts = 0
+    trusted = 0
+}
+/^  -/ {
+    next
+}
+trusted {
+    sub(/^ +/, "")
+    print
+}
+EOF
+if [ -s ${LIMA_CA_CERTS} ]; then
+    echo lima-init-ca-certs.crt >> /etc/ca-certificates.conf
+    update-ca-certificates
+fi

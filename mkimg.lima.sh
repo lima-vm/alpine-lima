@@ -29,6 +29,9 @@ profile_lima() {
         if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
             apks="$apks curl"
         fi
+        if [ "${LIMA_INSTALL_E2FSPROGS_EXTRA}" == "true" ]; then
+            apks="$apks e2fsprogs-extra"
+        fi
         if [ "${LIMA_INSTALL_GIT}" == "true" ]; then
             apks="$apks git"
         fi

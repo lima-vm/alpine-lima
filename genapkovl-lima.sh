@@ -224,6 +224,10 @@ if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
     echo "curl" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_E2FSPROGS_EXTRA}" == "true" ]; then
+    echo "e2fsprogs-extra" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_GIT}" == "true" ]; then
     echo "git" >> "$tmp"/etc/apk/world
 fi

@@ -148,6 +148,11 @@ datasource_list: [ NoCloud, None ]
 EOF
 fi
 
+if [ "${LIMA_INSTALL_CLOUD_UTILS_GROWPART}" == "true" ]; then
+    echo cloud-utils-growpart >> "$tmp"/etc/apk/world
+    echo partx >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo libseccomp >> "$tmp"/etc/apk/world
     echo runc >> "$tmp"/etc/apk/world

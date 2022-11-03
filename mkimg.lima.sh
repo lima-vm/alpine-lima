@@ -61,4 +61,7 @@ profile_lima() {
         if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
             apks="$apks iptables ip6tables"
         fi
+        if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then
+            apks="$apks zstd"
+        fi
 }

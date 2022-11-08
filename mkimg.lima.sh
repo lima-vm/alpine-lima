@@ -52,6 +52,12 @@ profile_lima() {
         if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
             apks="$apks logrotate"
         fi
+        if [ "${LIMA_INSTALL_MKCERT}" == "true" ]; then
+            apks="$apks mkcert"
+        fi
+        if [ "${LIMA_INSTALL_OPENRESTY}" == "true" ]; then
+            apks="$apks openresty"
+        fi
         if [ "${LIMA_INSTALL_OPENSSH_SFTP_SERVER=true}" == "true" ]; then
             apks="$apks openssh-sftp-server"
         fi

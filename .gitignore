@@ -4,5 +4,6 @@
 /rd.yaml
 /std.yaml
 /nerdctl-*
+/openresty*
 /qemu-*
 /cri-dockerd-*

@@ -19,5 +19,14 @@ RUN abuild-keygen -i -a -n
 RUN apk update
 
 ADD src/aports /home/build/aports
+ADD openresty.tar /home/build/packages/lima
+
+RUN if [ "${TARGETARCH}" = "arm64" ]; then pkg_arch=aarch64; else pkg_arch=x86_64; fi && \
+   mkdir -p /home/build/packages/lima/${pkg_arch} && \
+   cd /home/build/packages/lima/${pkg_arch} && \
+   apk fetch mkcert --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing && \
+   apk index -o APKINDEX.tar.gz *.apk && \
+   abuild-sign APKINDEX.tar.gz
+
 WORKDIR /home/build/aports/scripts
 ENTRYPOINT ["sh", "./mkimage.sh"]

@@ -250,6 +250,10 @@ if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "t
     echo "iptables ip6tables" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_MKCERT}" == "true" ]; then
+    echo "mkcert" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
     mkdir -p "${tmp}/nerdctl"
     tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl.tar.gz
@@ -259,6 +263,10 @@ if [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
         cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
         chmod u+s "${tmp}/usr/local/bin/${bin}"
     done
+fi
+
+if [ "${LIMA_INSTALL_OPENRESTY}" == "true" ]; then
+    echo "openresty" >> "$tmp"/etc/apk/world
 fi
 
 if [ "${LIMA_INSTALL_OPENSSH_SFTP_SERVER}" == "true" ]; then

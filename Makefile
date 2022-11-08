@@ -22,14 +22,16 @@ ARCH_ALIAS_aarch64 = arm64
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
 
 NERDCTL_VERSION=1.0.0
+OPENRESTY_VERSION=0.0.1
 QEMU_VERSION=v6.2.0
 CRI_DOCKERD_VERSION=0.2.3
 CRI_DOCKERD_ORG=Mirantis
 BINFMT_IMAGE=tonistiigi/binfmt:qemu-$(QEMU_VERSION)
 
 .PHONY: mkimage
-mkimage:
+mkimage: openresty-v$(OPENRESTY_VERSION)-$(ARCH)
 	cd src/aports && git fetch && git checkout $(GIT_TAG)
+	cp openresty-v$(OPENRESTY_VERSION)-$(ARCH) openresty.tar
 	$(DOCKER) build \
 		--progress plain --no-cache \
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
@@ -37,6 +39,7 @@ mkimage:
 		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \
 		--platform linux/$(ARCH_ALIAS) \
 		.
+	rm openresty.tar
 
 .PHONY: iso
 iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH)
@@ -45,6 +48,9 @@ iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying cri-dockerd
 
 nerdctl-$(NERDCTL_VERSION)-$(ARCH):
 	curl -o $@ -Ls https://github.com/containerd/nerdctl/releases/download/v$(NERDCTL_VERSION)/nerdctl-full-$(NERDCTL_VERSION)-linux-$(ARCH_ALIAS).tar.gz
+
+openresty-v$(OPENRESTY_VERSION)-$(ARCH):
+	curl -o $@ -Ls https://github.com/rancher-sandbox/openresty-packaging/releases/download/v$(OPENRESTY_VERSION)/$@.tar
 
 qemu-$(QEMU_VERSION)-copying:
 	curl -o $@ -Ls https://raw.githubusercontent.com/qemu/qemu/$(QEMU_VERSION)/COPYING

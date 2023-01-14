@@ -39,11 +39,11 @@ mkimage:
 		.
 
 .PHONY: iso
-iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH)
+iso: nerdctl-full-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH)
 	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) QEMU_VERSION=$(QEMU_VERSION) CRI_DOCKERD_VERSION=$(CRI_DOCKERD_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) BUILD_ID=$(BUILD_ID) ARCH=$(ARCH) ARCH_ALIAS=$(ARCH_ALIAS) ./build.sh
 
 
-nerdctl-$(NERDCTL_VERSION)-$(ARCH):
+nerdctl-full-$(NERDCTL_VERSION)-$(ARCH):
 	curl -o $@ -Ls https://github.com/containerd/nerdctl/releases/download/v$(NERDCTL_VERSION)/nerdctl-full-$(NERDCTL_VERSION)-linux-$(ARCH_ALIAS).tar.gz
 
 qemu-$(QEMU_VERSION)-copying:

@@ -23,7 +23,7 @@ profile_lima() {
         if [ "${LIMA_INSTALL_CLOUD_UTILS_GROWPART}" == "true" ]; then
             apks="$apks cloud-utils-growpart partx"
         fi
-        if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+        if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
             apks="$apks cni-plugins"
         fi
         if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
@@ -58,7 +58,7 @@ profile_lima() {
         if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
             apks="$apks sshfs"
         fi
-        if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL}" == "true" ]; then
+        if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
             apks="$apks iptables ip6tables"
         fi
         if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then

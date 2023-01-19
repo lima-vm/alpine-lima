@@ -221,8 +221,6 @@ if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
     if [ "$(uname -m)" == "aarch64" ]; then
         ARCH=arm64
     fi
-    mkdir -p "${tmp}/usr/libexec/cni"
-    ln -s "flannel-${ARCH}" "${tmp}/usr/libexec/cni/flannel"
 fi
 
 if [ "${LIMA_INSTALL_CURL}" == "true" ]; then

@@ -14,7 +14,8 @@ LIMA_CIDATA_DEV="/dev/disk/by-label/cidata"
 mkdir -p -m 700 "${LIMA_CIDATA_MNT}"
 mount -o ro,mode=0700,dmode=0700,overriderockperm,exec,uid=0 "${LIMA_CIDATA_DEV}" "${LIMA_CIDATA_MNT}"
 
-. "${LIMA_CIDATA_MNT}"/lima.env
+# We can't just source lima.env because values might have spaces in them
+while read -r line; do export "$line"; done <"${LIMA_CIDATA_MNT}"/lima.env
 
 # Set hostname
 LIMA_CIDATA_HOSTNAME="$(awk '/^local-hostname:/ {print $2}' "${LIMA_CIDATA_MNT}"/meta-data)"

@@ -4,6 +4,7 @@ depend() {
   after lima-init-local
   after net
   after procfs
+  after qemu-binfmt
   provide lima-init
 }
 

@@ -171,6 +171,12 @@ if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
     echo xz >> "$tmp"/etc/apk/world
 fi
 
+# /proc/sys/fs/binfmt_misc must exist for /etc/init.d/procfs to load
+# the binfmt-misc kernel module, which will then mount the filesystem.
+# This is needed for Rosetta to register.
+mkdir -p "${tmp}/proc/sys/fs/binfmt_misc"
+rc_add procfs default
+
 if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
     # install qemu-aarch64 on x86_64 and vice versa
     OTHERARCH=aarch64
@@ -283,6 +289,7 @@ if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
 fi
 
 mkdir -p "${tmp}/etc"
+mkdir -p "${tmp}/proc"
 mkdir -p "${tmp}/usr"
 
-tar -c -C "$tmp" etc usr | gzip -9n > $HOSTNAME.apkovl.tar.gz
+tar -c -C "$tmp" etc proc usr | gzip -9n > $HOSTNAME.apkovl.tar.gz

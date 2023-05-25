@@ -3,6 +3,7 @@
 depend() {
   after lima-init-local
   after net
+  after procfs
   provide lima-init
 }
 

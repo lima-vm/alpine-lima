@@ -19,7 +19,14 @@ endif
 # is required for Docker and asset downloads.
 ARCH_ALIAS_x86_64 = amd64
 ARCH_ALIAS_aarch64 = arm64
+ARCH_ALIAS_armv7l = arm-v7
 ARCH_ALIAS = $(shell echo "$(ARCH_ALIAS_$(ARCH))")
+
+# x86_64, aarch64, armv7
+ALPINE_ARCH = $(shell echo "$(ARCH)" | sed -e 's/armv7l/armv7/')
+
+# amd64, arm64, arm/v7
+DOCKER_ARCH = $(shell echo "$(ARCH_ALIAS)" | tr '-' '/')
 
 NERDCTL_VERSION=1.1.0
 QEMU_VERSION=v7.0.0
@@ -35,12 +42,12 @@ mkimage:
 		--tag mkimage:$(ALPINE_VERSION)-$(ARCH) \
 		--build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
 		--build-arg BINFMT_IMAGE=$(BINFMT_IMAGE) \
-		--platform linux/$(ARCH_ALIAS) \
+		--platform linux/$(DOCKER_ARCH) \
 		.
 
 .PHONY: iso
 iso: nerdctl-$(NERDCTL_VERSION)-$(ARCH) qemu-$(QEMU_VERSION)-copying cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH)
-	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) QEMU_VERSION=$(QEMU_VERSION) CRI_DOCKERD_VERSION=$(CRI_DOCKERD_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) BUILD_ID=$(BUILD_ID) ARCH=$(ARCH) ARCH_ALIAS=$(ARCH_ALIAS) ./build.sh
+	ALPINE_VERSION=$(ALPINE_VERSION) NERDCTL_VERSION=$(NERDCTL_VERSION) QEMU_VERSION=$(QEMU_VERSION) CRI_DOCKERD_VERSION=$(CRI_DOCKERD_VERSION) REPO_VERSION=$(REPO_VERSION) EDITION=$(EDITION) BUILD_ID=$(BUILD_ID) ARCH=$(ARCH) ARCH_ALIAS=$(ARCH_ALIAS) ALPINE_ARCH=$(ALPINE_ARCH) DOCKER_ARCH=$(DOCKER_ARCH) ./build.sh
 
 
 nerdctl-$(NERDCTL_VERSION)-$(ARCH):
@@ -55,27 +62,46 @@ cri-dockerd-$(CRI_DOCKERD_VERSION)-$(ARCH):
 
 .PHONY: lima
 lima:
-	ALPINE_VERSION=$(ALPINE_VERSION) EDITION=$(EDITION) ARCH=$(ARCH) ./lima.sh
+	ALPINE_VERSION=$(ALPINE_VERSION) EDITION=$(EDITION) ARCH=$(ARCH) ALPINE_ARCH=$(ALPINE_ARCH) ./lima.sh
+
+QEMU_ARCH = $(shell echo "$(ARCH)" | sed -e 's/armv7l/arm/')
 
 .PHONY: run
 run:
-	accel=tcg; display=sdl; \
+	cpu=max; accel=tcg; display=sdl; \
+	if [ "$(shell uname -m)" = "$(ARCH)" ]; then \
+		cpu=host; \
+		case "$(shell uname)" in \
+			Darwin) accel=hvf;; \
+			Linux) accel=kvm;; \
+		esac; \
+	fi; \
 	case "$(shell uname)" in \
-		Darwin) accel=hvf; display=cocoa;; \
-		Linux) accel=kvm; display=gtk;; \
+		Darwin) display=cocoa;; \
+		Linux) display=gtk;; \
 	esac; \
-	qemu-system-$(ARCH) \
+	case "$(ARCH)" in \
+		x86_64) machine=q35;; \
+		*) machine=virt;; \
+	esac; \
+	vga=cirrus-vga; \
+	if qemu-system-$(QEMU_ARCH) \
+		-device help \
+		-machine $$machine | grep -q virtio-vga; then \
+		vga=virtio-vga; \
+	fi; \
+	qemu-system-$(QEMU_ARCH) \
 		-boot order=d,splash-time=0,menu=on \
-		-cdrom iso/alpine-lima-$(EDITION)-$(ALPINE_VERSION)-$(ARCH).iso \
-		-cpu host \
-		-machine q35,accel=$$accel \
+		-cdrom iso/alpine-lima-$(EDITION)-$(ALPINE_VERSION)-$(ALPINE_ARCH).iso \
+		-cpu $$cpu \
+		-machine $$machine,accel=$$accel \
 		-smp 4,sockets=1,cores=4,threads=1 \
 		-m 4096 \
 		-net nic,model=virtio \
 		-net user,net=192.168.5.0/24,hostfwd=tcp:127.0.0.1:20022-:22 \
 		-display $$display \
 		-device virtio-rng-pci \
-		-device virtio-vga \
+		-device $$vga \
 		-device virtio-keyboard-pci \
 		-device virtio-mouse-pci \
 		-parallel none

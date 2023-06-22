@@ -8,7 +8,7 @@ esac
 cat <<EOF >"${EDITION}.yaml"
 arch: "${ARCH}"
 images:
-- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-${ALPINE_ARCH}.iso"
   arch: "${ARCH}"
 mounts:
 - location: "~"

@@ -5,6 +5,10 @@ case "$(uname)" in
   Darwin) display=cocoa;;
   Linux) display=gtk;;
 esac
+case "${ARCH}" in
+  x86_64) bios=true;;
+  *) bios=false;;
+esac
 cat <<EOF >"${EDITION}.yaml"
 arch: "${ARCH}"
 images:
@@ -18,7 +22,7 @@ mounts:
 ssh:
   localPort: 40022
 firmware:
-  legacyBIOS: true
+  legacyBIOS: $bios
 video:
   display: $display
 containerd:

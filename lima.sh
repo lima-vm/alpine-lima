@@ -5,10 +5,14 @@ case "$(uname)" in
   Darwin) display=cocoa;;
   Linux) display=gtk;;
 esac
+case "${ARCH}" in
+  x86_64) bios=true;;
+  *) bios=false;;
+esac
 cat <<EOF >"${EDITION}.yaml"
 arch: "${ARCH}"
 images:
-- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+- location: "${PWD}/iso/alpine-lima-${EDITION}-${ALPINE_VERSION}-${ALPINE_ARCH}.iso"
   arch: "${ARCH}"
 mounts:
 - location: "~"
@@ -18,7 +22,7 @@ mounts:
 ssh:
   localPort: 40022
 firmware:
-  legacyBIOS: true
+  legacyBIOS: $bios
 video:
   display: $display
 containerd:

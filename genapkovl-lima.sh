@@ -177,10 +177,12 @@ fi
 mkdir -p "${tmp}/proc/sys/fs/binfmt_misc"
 rc_add procfs default
 
-if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ]; then
+if [ "${LIMA_INSTALL_BINFMT_MISC}" == "true" ] && [ "$(uname -m)" != "armv7l" ]; then
     # install qemu-aarch64 on x86_64 and vice versa
-    OTHERARCH=aarch64
-    if [ "$(uname -m)" == "${OTHERARCH}" ]; then
+    if [ "$(uname -m)" == "x86_64" ]; then
+        OTHERARCH=aarch64
+    fi
+    if [ "$(uname -m)" == "aarch64" ]; then
         OTHERARCH=x86_64
     fi
 
@@ -223,9 +225,14 @@ fi
 
 if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
     echo "cni-plugin-flannel" >> "$tmp"/etc/apk/world
-    ARCH=amd64
+    if [ "$(uname -m)" == "x86_64" ]; then
+        ARCH=amd64
+    fi
     if [ "$(uname -m)" == "aarch64" ]; then
         ARCH=arm64
+    fi
+    if [ "$(uname -m)" == "armv7l" ]; then
+        ARCH=armv7
     fi
 fi
 

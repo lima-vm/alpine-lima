@@ -10,7 +10,7 @@ TAG="${EDITION}-${ALPINE_VERSION}"
 source "edition/${EDITION}"
 
 ${DOCKER} run --rm \
-    --platform "linux/${ARCH_ALIAS}" \
+    --platform "linux/${DOCKER_ARCH}" \
     -v "${PWD}/iso:/iso" \
     -v "${PWD}/mkimg.lima.sh:/home/build/aports/scripts/mkimg.lima.sh:ro" \
     -v "${PWD}/genapkovl-lima.sh:/home/build/aports/scripts/genapkovl-lima.sh:ro" \
@@ -30,11 +30,11 @@ ${DOCKER} run --rm \
     "mkimage:${ALPINE_VERSION}-${ARCH}" \
     --tag "${TAG}" \
     --outdir /iso \
-    --arch "${ARCH}" \
+    --arch "${ALPINE_ARCH}" \
     --repository "/home/build/packages/lima" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/main" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/community" \
     --profile lima
 
-ISO="alpine-lima-${EDITION}-${ALPINE_VERSION}-${ARCH}.iso"
+ISO="alpine-lima-${EDITION}-${ALPINE_VERSION}-${ALPINE_ARCH}.iso"
 cd iso && sha512sum "${ISO}" > "${ISO}.sha512sum"

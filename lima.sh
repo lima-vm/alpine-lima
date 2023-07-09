@@ -17,8 +17,6 @@ mounts:
   writable: true
 ssh:
   localPort: 40022
-firmware:
-  legacyBIOS: true
 video:
   display: $display
 containerd:

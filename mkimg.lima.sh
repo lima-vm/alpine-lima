@@ -10,7 +10,7 @@ profile_lima() {
 	initfs_cmdline="modules=loop,squashfs,sd-mod,usb-storage"
 	kernel_addons=
 	kernel_flavors="virt"
-	kernel_cmdline="console=tty0 console=ttyS0,115200"
+	kernel_cmdline="console=hvc0 console=tty0 console=ttyS0,115200"
 	syslinux_serial="0 115200"
 	apkovl="genapkovl-lima.sh"
 	apks="$apks openssh-server-pam"

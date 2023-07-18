@@ -277,6 +277,10 @@ if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then
     echo "zstd" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
+    echo "tini" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
     mkdir -p "${tmp}/cri-dockerd"
     tar xz -C "${tmp}/cri-dockerd" -f /home/build/cri-dockerd.tar.gz

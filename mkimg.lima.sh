@@ -58,6 +58,9 @@ profile_lima() {
         if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
             apks="$apks sshfs"
         fi
+        if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
+            apks="$apks tini"
+        fi
         if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
             apks="$apks iptables ip6tables"
         fi

@@ -278,7 +278,8 @@ if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then
 fi
 
 if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
-    echo "tini" >> "$tmp"/etc/apk/world
+    echo tini-static >> "$tmp"/etc/apk/world
+    ln -sf /sbin/tini-static "$tmp"/usr/bin/tini
 fi
 
 if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then

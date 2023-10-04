@@ -293,6 +293,11 @@ if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
     cp /home/build/cri-dockerd.license "${tmp}/usr/share/doc/cri-dockerd/LICENSE"
 fi
 
+if [ "${LIMA_INSTALL_CGROUP_CONF}" == "true" ]; then
+    mkdir -p "${tmp}/etc/conf.d"
+    echo 'rc_cgroup_mode=${LIMA_ALPINE_CGROUP_MODE:-hybrid}' >> ${tmp}/etc/conf.d/cgroups
+fi
+
 mkdir -p "${tmp}/etc"
 mkdir -p "${tmp}/proc"
 mkdir -p "${tmp}/usr"

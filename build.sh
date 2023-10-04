@@ -24,6 +24,7 @@ ${DOCKER} run --rm \
     -v "${PWD}/cri-dockerd-${CRI_DOCKERD_VERSION}-${ARCH}.LICENSE:/home/build/cri-dockerd.license:ro" \
     -v "${PWD}/sshd.pam:/home/build/sshd.pam:ro" \
     $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
+    -e "LIMA_INSTALL_CGROUP_CONF=${LIMA_INSTALL_CGROUP_CONF}" \
     -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
     -e "LIMA_BUILD_ID=${BUILD_ID}" \
     -e "LIMA_VARIANT_ID=${EDITION}" \

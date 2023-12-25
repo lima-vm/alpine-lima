@@ -21,6 +21,14 @@ while read -r line; do export "$line"; done <"${LIMA_CIDATA_MNT}"/lima.env
 LIMA_CIDATA_HOSTNAME="$(awk '/^local-hostname:/ {print $2}' "${LIMA_CIDATA_MNT}"/meta-data)"
 hostname "${LIMA_CIDATA_HOSTNAME}"
 
+# Set timezone
+LIMA_CIDATA_TIMEZONE="$(awk '/^timezone:/ {print $2}' "${LIMA_CIDATA_MNT}"/user-data)"
+if [ -n "${LIMA_CIDATA_TIMEZONE}" ]; then
+    if setup-timezone "${LIMA_CIDATA_TIMEZONE}"; then
+        echo "${LIMA_CIDATA_TIMEZONE}" >/etc/timezone
+    fi
+fi
+
 # Create user
 LIMA_CIDATA_HOMEDIR="/home/${LIMA_CIDATA_USER}.linux"
 useradd --home-dir "${LIMA_CIDATA_HOMEDIR}" --create-home --uid "${LIMA_CIDATA_UID}" "${LIMA_CIDATA_USER}"

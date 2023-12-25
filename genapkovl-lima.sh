@@ -282,6 +282,10 @@ if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
     ln -sf /sbin/tini-static "$tmp"/usr/bin/tini
 fi
 
+if [ "${LIMA_INSTALL_TZDATA}" == "true" ]; then
+    echo tzdata >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
     mkdir -p "${tmp}/cri-dockerd"
     tar xz -C "${tmp}/cri-dockerd" -f /home/build/cri-dockerd.tar.gz

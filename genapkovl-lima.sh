@@ -44,7 +44,7 @@ EOF
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
-openssh-server-pam
+openssh-server
 EOF
 
 rc_add devfs sysinit
@@ -98,9 +98,6 @@ start() {
 EOF
 
 rc_add lima-overlay default
-
-mkdir -p "$tmp"/etc/pam.d
-cp /home/build/sshd.pam "${tmp}/etc/pam.d/sshd"
 
 if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
     rc_add lima-init default

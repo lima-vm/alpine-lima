@@ -46,17 +46,6 @@ jobs:
       if: github.event_name != 'pull_request'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Note "folded" style; requires a blank line to insert actual newline
-      run: >
+      run: |
         tag="${GITHUB_REF##*/}"
-
-        hub release create
-        -a iso/alpine-lima-std-${ALPINE_VERSION}-aarch64.iso
-        -a iso/alpine-lima-std-${ALPINE_VERSION}-aarch64.iso.sha512sum
-        -a iso/alpine-lima-std-${ALPINE_VERSION}-x86_64.iso
-        -a iso/alpine-lima-std-${ALPINE_VERSION}-x86_64.iso.sha512sum
-        -a iso/alpine-lima-rd-${ALPINE_VERSION}-aarch64.iso
-        -a iso/alpine-lima-rd-${ALPINE_VERSION}-aarch64.iso.sha512sum
-        -a iso/alpine-lima-rd-${ALPINE_VERSION}-x86_64.iso
-        -a iso/alpine-lima-rd-${ALPINE_VERSION}-x86_64.iso.sha512sum
-        -m "${tag}" --draft "${tag}"
+        gh release create --draft --title "${tag}" "${tag}" iso/alpine-lima-{std,rd}-*

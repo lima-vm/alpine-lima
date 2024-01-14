@@ -8,7 +8,7 @@ on:
   pull_request:
 
 env:
-  ALPINE_VERSION: 3.18.0
+  ALPINE_VERSION: 3.19.0
   DOCKER_BUILDKIT: 1
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 60
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 1
         submodules: recursive

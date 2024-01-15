@@ -44,7 +44,7 @@ EOF
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
-openssh-server
+openssh-server-pam
 EOF
 
 rc_add devfs sysinit

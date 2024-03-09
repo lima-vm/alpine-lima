@@ -45,10 +45,10 @@ LIMA_CIDATA_GID=$(id -g "${LIMA_CIDATA_USER}")
 chown -R "${LIMA_CIDATA_UID}:${LIMA_CIDATA_GID}" "${LIMA_CIDATA_SSHDIR}"
 chmod 600 "${LIMA_CIDATA_SSHDIR}"/authorized_keys
 
-# Add mounts to /etc/fstab
-sed -i '/#LIMA-START/,/#LIMA-END/d' /etc/fstab
-echo "#LIMA-START" >> /etc/fstab
-awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' >> /etc/fstab
+# Process mounts
+MOUNT_SCRIPT=/etc/lima-mounts
+echo "#!/bin/sh -eux" >"${MOUNT_SCRIPT}"
+awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' >>"${MOUNT_SCRIPT}"
 /^mounts:/ {
     flag = 1
     next
@@ -57,15 +57,17 @@ awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' >> /etc/fstab
     flag = 0
 }
 flag {
+    # Use a pattern unlikely to appear in a filename. "\0" unfortunately doesn't work.
+    FS = "<;><><;>"
     sub(/^ *- \[/, "")
     sub(/"?\] *$/, "")
-    gsub("\"?, \"?", "\t")
-    print $0
+    gsub("\"?, \"?", FS)
+    printf "mkdir -p \"%s\"\n", $2
+    printf "mount -t %s -o \"%s\" %s \"%s\"\n", $3, $4, $1, $2
 }
 EOF
-echo "#LIMA-END" >> /etc/fstab
-mkmntdirs
-mount -a
+chmod +x "${MOUNT_SCRIPT}"
+"${MOUNT_SCRIPT}"
 
 # Rename network interfaces according to network-config setting
 mkdir -p /var/lib/lima-init

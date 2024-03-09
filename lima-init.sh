@@ -53,10 +53,7 @@ awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' >>"${MOUNT_SCRIPT}"
     flag = 1
     next
 }
-/^ *$/ {
-    flag = 0
-}
-flag {
+/^- / && flag {
     # Use a pattern unlikely to appear in a filename. "\0" unfortunately doesn't work.
     FS = "<;><><;>"
     sub(/^ *- \[/, "")
@@ -64,6 +61,10 @@ flag {
     gsub("\"?, \"?", FS)
     printf "mkdir -p \"%s\"\n", $2
     printf "mount -t %s -o \"%s\" %s \"%s\"\n", $3, $4, $1, $2
+    next
+}
+{
+    flag = 0
 }
 EOF
 chmod +x "${MOUNT_SCRIPT}"
@@ -134,16 +135,21 @@ awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' > ${LIMA_CA_CERTS}
     trusted = 1
     next
 }
-/^ *$/ {
-    cacerts = 0
-    trusted = 0
-}
 /^  -/ {
     next
 }
-trusted {
+/^  / && trusted {
     sub(/^ +/, "")
     print
+    next
+}
+# As long as the line is indented we may still be in the ca_certs block, looking for "trusted"
+/^  / {
+    next
+}
+{
+    cacerts = 0
+    trusted = 0
 }
 EOF
 if [ -s ${LIMA_CA_CERTS} ]; then

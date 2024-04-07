@@ -39,7 +39,8 @@ echo "${LIMA_CIDATA_USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/90-lima-users
 # Create authorized_keys
 LIMA_CIDATA_SSHDIR="${LIMA_CIDATA_HOMEDIR}"/.ssh
 mkdir -p -m 700 "${LIMA_CIDATA_SSHDIR}"
-awk '/ssh-authorized-keys/ {flag=1; next} /^ *$/ {flag=0} flag {sub(/^ +- /, ""); gsub(/^"|"$/,""); gsub("\\\\\"", "\""); print $0}' \
+# Lima currently uses "ssh-authorized-keys", which is invalid and should be "ssh_authorized_keys"
+awk '/ssh[-_]authorized[-_]keys/ {flag=1; next} /^ *$/ {flag=0} flag {sub(/^ +- /, ""); gsub(/^"|"$/,""); gsub("\\\\\"", "\""); print $0}' \
 	"${LIMA_CIDATA_MNT}"/user-data >"${LIMA_CIDATA_SSHDIR}"/authorized_keys
 LIMA_CIDATA_GID=$(id -g "${LIMA_CIDATA_USER}")
 chown -R "${LIMA_CIDATA_UID}:${LIMA_CIDATA_GID}" "${LIMA_CIDATA_SSHDIR}"

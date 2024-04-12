@@ -128,7 +128,7 @@ fi
 LIMA_CA_CERTS=/usr/share/ca-certificates/lima-init-ca-certs.crt
 awk -f- "${LIMA_CIDATA_MNT}"/user-data <<'EOF' > ${LIMA_CA_CERTS}
 # Lima currently uses "ca-certs", which is deprecated and should be "ca_certs"
-/^ca.certs:/ {
+/^ca[-_]certs:/ {
     cacerts = 1
     next
 }

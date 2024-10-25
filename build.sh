@@ -18,10 +18,7 @@ ${DOCKER} run --rm \
     -v "${PWD}/lima-init.openrc:/home/build/lima-init.openrc:ro" \
     -v "${PWD}/lima-init-local.openrc:/home/build/lima-init-local.openrc:ro" \
     -v "${PWD}/lima-network.awk:/home/build/lima-network.awk:ro" \
-    -v "${PWD}/nerdctl-full-${NERDCTL_VERSION}-${ARCH}:/home/build/nerdctl-full.tar.gz:ro" \
     -v "${PWD}/qemu-${QEMU_VERSION}-copying:/home/build/qemu-copying:ro" \
-    -v "${PWD}/cri-dockerd-${CRI_DOCKERD_VERSION}-${ARCH}:/home/build/cri-dockerd.tar.gz:ro" \
-    -v "${PWD}/cri-dockerd-${CRI_DOCKERD_VERSION}-${ARCH}.LICENSE:/home/build/cri-dockerd.license:ro" \
     $(env | grep ^LIMA_ | xargs -n 1 printf -- '-e %s ') \
     -e "LIMA_REPO_VERSION=${REPO_VERSION}" \
     -e "LIMA_BUILD_ID=${BUILD_ID}" \

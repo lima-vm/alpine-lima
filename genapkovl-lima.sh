@@ -154,24 +154,6 @@ if [ "${LIMA_INSTALL_CLOUD_UTILS_GROWPART}" == "true" ]; then
     echo partx >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
-    echo libseccomp >> "$tmp"/etc/apk/world
-    echo runc >> "$tmp"/etc/apk/world
-    echo containerd >> "$tmp"/etc/apk/world
-    echo tini-static >> "$tmp"/etc/apk/world
-    echo device-mapper-libs >> "$tmp"/etc/apk/world
-    echo docker-engine >> "$tmp"/etc/apk/world
-    echo docker-openrc >> "$tmp"/etc/apk/world
-    echo docker-cli >> "$tmp"/etc/apk/world
-    echo docker >> "$tmp"/etc/apk/world
-
-    # kubectl port-forward requires `socat` when using docker-shim
-    echo socat >> "$tmp"/etc/apk/world
-
-    # So `docker buildx` can unpack tar.xz files
-    echo xz >> "$tmp"/etc/apk/world
-fi
-
 # /proc/sys/fs/binfmt_misc must exist for /etc/init.d/procfs to load
 # the binfmt-misc kernel module, which will then mount the filesystem.
 # This is needed for Rosetta to register.
@@ -218,22 +200,6 @@ if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
     echo "ca-certificates" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
-    echo "cni-plugins" >> "$tmp"/etc/apk/world
-fi
-
-if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
-    echo "cni-plugin-flannel" >> "$tmp"/etc/apk/world
-    ARCH=amd64
-    if [ "$(uname -m)" == "aarch64" ]; then
-        ARCH=arm64
-    fi
-fi
-
-if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
-    echo "curl" >> "$tmp"/etc/apk/world
-fi
-
 if [ "${LIMA_INSTALL_E2FSPROGS_EXTRA}" == "true" ]; then
     echo "e2fsprogs-extra" >> "$tmp"/etc/apk/world
 fi
@@ -251,19 +217,8 @@ if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
     echo "logrotate" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
+if [ "${LIMA_INSTALL_IPTABLES}" == "true" ]; then
     echo "iptables ip6tables" >> "$tmp"/etc/apk/world
-fi
-
-if [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
-    mkdir -p "${tmp}/nerdctl"
-    tar xz -C "${tmp}/nerdctl" -f /home/build/nerdctl-full.tar.gz
-
-    mkdir -p "${tmp}/usr/local/bin/"
-    for bin in buildctl buildkitd nerdctl; do
-        cp "${tmp}/nerdctl/bin/${bin}" "${tmp}/usr/local/bin/${bin}"
-        chmod u+s "${tmp}/usr/local/bin/${bin}"
-    done
 fi
 
 if [ "${LIMA_INSTALL_OPENSSH_SFTP_SERVER}" == "true" ]; then
@@ -274,10 +229,6 @@ if [ "${LIMA_INSTALL_SSHFS}" == "true" ]; then
     echo "sshfs" >> "$tmp"/etc/apk/world
 fi
 
-if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then
-    echo "zstd" >> "$tmp"/etc/apk/world
-fi
-
 if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
     echo tini-static >> "$tmp"/etc/apk/world
     ln -sf /sbin/tini-static "$tmp"/usr/bin/tini
@@ -285,17 +236,6 @@ fi
 
 if [ "${LIMA_INSTALL_TZDATA}" == "true" ]; then
     echo tzdata >> "$tmp"/etc/apk/world
-fi
-
-if [ "${LIMA_INSTALL_CRI_DOCKERD}" == "true" ]; then
-    mkdir -p "${tmp}/cri-dockerd"
-    tar xz -C "${tmp}/cri-dockerd" -f /home/build/cri-dockerd.tar.gz
-    mkdir -p "${tmp}/usr/local/bin/"
-    cp "${tmp}/cri-dockerd/cri-dockerd/cri-dockerd" "${tmp}/usr/local/bin/"
-
-    #Copy the LICENSE file for cri-dockerd
-    mkdir -p "${tmp}/usr/share/doc/cri-dockerd/"
-    cp /home/build/cri-dockerd.license "${tmp}/usr/share/doc/cri-dockerd/LICENSE"
 fi
 
 mkdir -p "${tmp}/etc"

@@ -23,31 +23,20 @@ profile_lima() {
         if [ "${LIMA_INSTALL_CLOUD_UTILS_GROWPART}" == "true" ]; then
             apks="$apks cloud-utils-growpart partx"
         fi
-        if [ "${LIMA_INSTALL_CNI_PLUGINS}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
-            apks="$apks cni-plugins"
-        fi
-        if [ "${LIMA_INSTALL_CNI_PLUGIN_FLANNEL}" == "true" ]; then
-            apks="$apks cni-plugin-flannel"
-        fi
-        if [ "${LIMA_INSTALL_CURL}" == "true" ]; then
-            apks="$apks curl"
-        fi
         if [ "${LIMA_INSTALL_E2FSPROGS_EXTRA}" == "true" ]; then
             apks="$apks e2fsprogs-extra"
         fi
         if [ "${LIMA_INSTALL_GIT}" == "true" ]; then
             apks="$apks git"
         fi
-        if [ "${LIMA_INSTALL_DOCKER}" == "true" ]; then
-            apks="$apks libseccomp runc containerd tini-static device-mapper-libs"
-            apks="$apks docker-engine docker-openrc docker-cli docker"
-            apks="$apks socat xz"
-        fi
-        if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
-            apks="$apks e2fsprogs lsblk sfdisk shadow sudo udev"
+        if [ "${LIMA_INSTALL_IPTABLES}" == "true" ]; then
+            apks="$apks iptables ip6tables"
         fi
         if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
             apks="$apks k3s"
+        fi
+        if [ "${LIMA_INSTALL_LIMA_INIT}" == "true" ]; then
+            apks="$apks e2fsprogs lsblk sfdisk shadow sudo udev"
         fi
         if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
             apks="$apks logrotate"
@@ -61,13 +50,7 @@ profile_lima() {
         if [ "${LIMA_INSTALL_TINI}" == "true" ]; then
             apks="$apks tini-static"
         fi
-        if [ "${LIMA_INSTALL_IPTABLES}" == "true" ] || [ "${LIMA_INSTALL_NERDCTL_FULL}" == "true" ]; then
-            apks="$apks iptables ip6tables"
-        fi
         if [ "${LIMA_INSTALL_TZDATA}" == "true" ]; then
             apks="$apks tzdata"
-        fi
-        if [ "${LIMA_INSTALL_ZSTD}" == "true" ]; then
-            apks="$apks zstd"
         fi
 }

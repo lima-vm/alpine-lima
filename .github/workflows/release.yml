@@ -43,4 +43,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         tag="${GITHUB_REF##*/}"
-        gh release create --draft --title "${tag}" "${tag}" iso/alpine-lima-{std,rd}-*
+        gh release create --draft --title "${tag}" "${tag}" iso/alpine-lima-std-*

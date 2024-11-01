@@ -30,8 +30,9 @@ if [ -n "${LIMA_CIDATA_TIMEZONE}" ]; then
 fi
 
 # Create user
-LIMA_CIDATA_HOMEDIR="/home/${LIMA_CIDATA_USER}.linux"
-useradd --home-dir "${LIMA_CIDATA_HOMEDIR}" --create-home --uid "${LIMA_CIDATA_UID}" "${LIMA_CIDATA_USER}"
+# LIMA_CIDATA_HOME has been added in Lima 0.18.0
+LIMA_CIDATA_HOMEDIR=${LIMA_CIDATA_HOME:-/home/${LIMA_CIDATA_USER}.linux}
+useradd --home-dir "${LIMA_CIDATA_HOMEDIR}" --create-home --comment "${LIMA_CIDATA_COMMENT:-}" --uid "${LIMA_CIDATA_UID}" "${LIMA_CIDATA_USER}"
 
 # Add user to sudoers
 echo "${LIMA_CIDATA_USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/90-lima-users

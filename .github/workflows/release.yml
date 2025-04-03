@@ -8,7 +8,7 @@ on:
   pull_request:
 
 env:
-  ALPINE_VERSION: 3.20.3
+  ALPINE_VERSION: 3.21.3
   DOCKER_BUILDKIT: 1
 
 jobs:

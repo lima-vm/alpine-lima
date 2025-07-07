@@ -13,7 +13,7 @@ profile_lima() {
 	kernel_cmdline="console=hvc0 console=tty0 console=ttyS0,115200"
 	syslinux_serial="0 115200"
 	apkovl="genapkovl-lima.sh"
-	apks="$apks openssh-server-pam tiny-cloud-nocloud"
+	apks="$apks iproute2 openssh-server-pam tiny-cloud-nocloud"
         if [ "${LIMA_INSTALL_CA_CERTIFICATES}" == "true" ]; then
             apks="$apks ca-certificates"
         fi

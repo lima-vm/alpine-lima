@@ -209,6 +209,10 @@ if [ "${LIMA_INSTALL_GIT}" == "true" ]; then
     echo "git" >> "$tmp"/etc/apk/world
 fi
 
+if [ "${LIMA_INSTALL_IPTABLES}" == "true" ]; then
+    echo "iptables ip6tables" >> "$tmp"/etc/apk/world
+fi
+
 if [ "${LIMA_INSTALL_K3S}" == "true" ]; then
     echo "k3s" >> "$tmp"/etc/apk/world
     rc_add k3s default
@@ -216,10 +220,6 @@ fi
 
 if [ "${LIMA_INSTALL_LOGROTATE}" == "true" ]; then
     echo "logrotate" >> "$tmp"/etc/apk/world
-fi
-
-if [ "${LIMA_INSTALL_IPTABLES}" == "true" ]; then
-    echo "iptables ip6tables" >> "$tmp"/etc/apk/world
 fi
 
 if [ "${LIMA_INSTALL_OPENSSH_SFTP_SERVER}" == "true" ]; then

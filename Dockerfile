@@ -1,7 +1,7 @@
 ARG ALPINE_VERSION=latest
 ARG BINFMT_IMAGE=tonistiigi/binfmt:latest
 
-FROM ${BINFMT_IMAGE} as binfmt
+FROM ${BINFMT_IMAGE} AS binfmt
 
 FROM alpine:${ALPINE_VERSION}
 RUN apk add alpine-sdk build-base apk-tools alpine-conf busybox \

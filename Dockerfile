@@ -19,5 +19,7 @@ RUN abuild-keygen -i -a -n
 RUN apk update
 
 ADD src/aports /home/build/aports
+# Remove --no-chown which is deprecated in apk 3.0 as alias for --usermode (disallowed as root)
+RUN sed -i 's/--initdb --no-chown/--initdb/' /home/build/aports/scripts/mkimage.sh
 WORKDIR /home/build/aports/scripts
 ENTRYPOINT ["sh", "./mkimage.sh"]

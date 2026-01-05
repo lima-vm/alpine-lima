@@ -27,7 +27,6 @@ ${DOCKER} run --rm \
     --tag "${TAG}" \
     --outdir /iso \
     --arch "${ARCH}" \
-    --repository "/home/build/packages/lima" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/main" \
     --repository "http://dl-cdn.alpinelinux.org/alpine/${REPO_VERSION}/community" \
     --profile lima

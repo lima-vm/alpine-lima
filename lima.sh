@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -eu
 
-case "$(uname)" in
-  Darwin) display=cocoa;;
-  Linux) display=gtk;;
-esac
 cat <<EOF >"${EDITION}.yaml"
 arch: "${ARCH}"
 images:
@@ -17,10 +13,8 @@ mounts:
   writable: true
 ssh:
   localPort: 40022
-firmware:
-  legacyBIOS: true
 video:
-  display: $display
+  display: default
 containerd:
   system: false
   user: false

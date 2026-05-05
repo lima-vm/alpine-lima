@@ -11,10 +11,15 @@ env:
   ALPINE_VERSION: 3.23.0
   DOCKER_BUILDKIT: 1
 
+permissions:
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4

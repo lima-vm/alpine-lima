@@ -8,7 +8,7 @@ on:
   pull_request:
 
 env:
-  ALPINE_VERSION: 3.23.0
+  ALPINE_VERSION: 3.24.1
   DOCKER_BUILDKIT: 1
 
 permissions:

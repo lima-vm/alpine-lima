@@ -41,13 +41,13 @@ Only `x86_64` and `aarch64` have been tested but other architectures can also be
 
 ## Building and testing
 
-Note that this repo includes the [Alpine aports](https://github.com/alpinelinux/aports.git) repository as a submodule. If you didn't specify the `--recursive` option when cloning this repo, then you need to initialize the submodule by running:
+Note that this repo includes the [Alpine aports](https://gitlab.alpinelinux.org/alpine/aports) repository as a submodule. If you didn't specify the `--recursive` option when cloning this repo, then you need to initialize the submodule by running:
 
 ```
 git submodule update --init
 ```
 
-The examples show the default values for `ALPINE_VERSION=3.24.3 EDITION=std`, `ARCH` defaults to the OS architecture `uname -m`.
+The examples show the default values for `ALPINE_VERSION=3.24.4 EDITION=std`, `ARCH` defaults to the OS architecture `uname -m`.
 The options need to be specified only to select non-default setting.
 
 ### Build the builder
@@ -55,7 +55,7 @@ The options need to be specified only to select non-default setting.
 The ISO builder will be created inside a docker image. You can specify the Alpine version used to create it:
 
 ```
-make mkimage ALPINE_VERSION=3.24.3
+make mkimage ALPINE_VERSION=3.24.4
 ```
 
 ### Build the ISO
@@ -63,17 +63,17 @@ make mkimage ALPINE_VERSION=3.24.3
 This docker image can then be used to create ISO images that will be stored under `./iso`:
 
 ```
-make iso ALPINE_VERSION=3.24.3 EDITION=std
+make iso ALPINE_VERSION=3.24.4 EDITION=std
 ```
 
 ### Run the ISO with qemu
 
 ```
-make run ALPINE_VERSION=3.24.3 EDITION=std
+make run ALPINE_VERSION=3.24.4 EDITION=std
 ```
 
 ### Run the ISO with Lima
 
 ```
-make lima ALPINE_VERSION=3.24.3 EDITION=std
+make lima ALPINE_VERSION=3.24.4 EDITION=std
 ```

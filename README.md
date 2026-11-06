@@ -41,7 +41,7 @@ Only `x86_64` and `aarch64` have been tested but other architectures can also be
 
 ## Building and testing
 
-Note that this repo includes the [Alpine aports](https://github.com/alpinelinux/aports.git) repository as a submodule. If you didn't specify the `--recursive` option when cloning this repo, then you need to initialize the submodule by running:
+Note that this repo includes the [Alpine aports](https://gitlab.alpinelinux.org/alpine/aports) repository as a submodule. If you didn't specify the `--recursive` option when cloning this repo, then you need to initialize the submodule by running:
 
 ```
 git submodule update --init
